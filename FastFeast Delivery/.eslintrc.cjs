@@ -9,6 +9,11 @@ module.exports = {
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier/skip-formatting'
   ],
+  rules:{
+    "no-console":"error"
+
+  },
+
   overrides: [
     {
       files: [
