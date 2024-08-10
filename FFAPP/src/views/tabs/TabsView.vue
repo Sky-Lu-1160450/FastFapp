@@ -16,8 +16,10 @@ watch(active, (nv) => {
 </script>
 
 <template>
-    <div class="center"> {{ active }} </div>
+    <!-- <div class="center"> {{ active }} </div> -->
+    <RouterView />
     <Tabbar v-model="active">
+        
 
         <TabbarItem name="home" icon="home-o">首页</TabbarItem>
         <TabbarItem name="order" icon="bars">订单</TabbarItem>
