@@ -1,10 +1,22 @@
 <script setup lang="ts">
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import { Tabbar, TabbarItem } from 'vant';
-import { ref } from 'vue'
-const active = ref('')
+import { ref, watch} from 'vue'
+
+const route = useRoute()
+const router = useRouter()
+const active = ref(route.name as string)
+
+watch(active, (nv) => {
+    router.push({
+        name : nv,
+    })
+
+})
 </script>
 
 <template>
+    <div class="center"> {{ active }} </div>
     <Tabbar v-model="active">
 
         <TabbarItem name="home" icon="home-o">首页</TabbarItem>
@@ -14,3 +26,9 @@ const active = ref('')
     </Tabbar>
 
 </template>
+
+<style>
+    .center {
+        text-align: center;
+    }
+</style>

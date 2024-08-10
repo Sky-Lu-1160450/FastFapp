@@ -1,10 +1,12 @@
 <script setup lang="ts">
-    import TabsView from './views/tabs/TabsView.vue';
+    // import TabsView from './views/tabs/TabsView.vue';
+    import { RouterView } from 'vue-router'
 
 </script>
 
 <template>
-<TabsView> </TabsView>
+  <RouterView />
+  <!-- <TabsView> </TabsView> -->
 </template>
 
 <style scoped>
