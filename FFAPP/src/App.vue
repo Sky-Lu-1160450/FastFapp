@@ -2,6 +2,9 @@
     // import TabsView from './views/tabs/TabsView.vue';
     import { RouterView } from 'vue-router'
 
+    import { fetchTest } from '@/api/test';
+    fetchTest()
+
 </script>
 
 <template>
