@@ -15,7 +15,7 @@
   <!-- <TabsView> </TabsView> -->
 </template>
 
-<style scoped>
+<style>
 @import 'normalize.css';
 #app {
   -webkit-font-smoothing: antialiased;

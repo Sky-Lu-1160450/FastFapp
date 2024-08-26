@@ -1,10 +1,25 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { ISearchRecomment } from '@/types'
+import OpSearch from '@/components/OpSearch.vue'
 interface IProps {
     recomments: ISearchRecomment[]
 }
 
 defineProps<IProps>()
+
+const searchValue = ref ('test')
+
+const onSearch = (v?: string | number ) => {
+    console.log('====search',v)
+}
+const onCancel = () =>{
+    console.log('====cancel')
+
+}
+const onClear = () =>{
+    console.log('====clear')
+}
 
 </script>
 
@@ -16,15 +31,31 @@ defineProps<IProps>()
             <img class = "shopcart-icon" src = "@/assets/imgs/index_page/shopcart.png">
             <img class = "comments-icon" src = "@/assets/imgs/index_page/comments.png">
         </div>
-        <VanSearch 
+        <!-- <VanSearch 
         shape="round" 
         background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
         placeholder="Enter your Favourite Food"
         >
-        <template #right-icon>
-            <div>Search</div>
+            <template #right-icon>
+                <div>Search</div>
 
-        </template> </VanSearch>
+            </template> 
+        </VanSearch> -->
+        <OpSearch 
+            show-action
+            v-model="searchValue"
+            shape="round" 
+            background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
+            placeholder="Enter your Favourite Food"
+            @search="onSearch"
+            @cancel="onCancel"
+            @clear="onClear"
+        >
+            <!-- <template #right-icon>
+                <div>Search</div>
+
+            </template> -->
+        </OpSearch>
         <div class="search-recommend">
             <div v-for="v in recomments " :key="v.value" class="tag">{{ v.label }}</div>
         </div>
