@@ -21,9 +21,9 @@ watch(active, (nv) => {
     <VanTabbar v-model="active">
         
 
-        <VanTabbarItem name="home" icon="home-o">首页</VanTabbarItem>
-        <VanTabbarItem name="order" icon="bars">订单</VanTabbarItem>
-        <VanTabbarItem name="me" icon="contact">我的</VanTabbarItem>  
+        <VanTabbarItem name="home" icon="home-o">Home</VanTabbarItem>
+        <VanTabbarItem name="order" icon="bars">Order</VanTabbarItem>
+        <VanTabbarItem name="me" icon="contact">Account</VanTabbarItem>  
 
     </VanTabbar>
 
