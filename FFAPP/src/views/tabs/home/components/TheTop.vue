@@ -8,19 +8,11 @@ interface IProps {
 
 defineProps<IProps>()
 
-const searchValue = ref ('test')
-
-const onSearch = (v?: string | number ) => {
-    console.log('====search',v)
-}
-const onCancel = () =>{
-    console.log('====cancel')
-
-}
-const onClear = () =>{
-    console.log('====clear')
+interface IEmits {
+  (e: 'searchClick'): void
 }
 
+const emits = defineEmits<IEmits>()
 </script>
 
 <template>
@@ -42,19 +34,17 @@ const onClear = () =>{
             </template> 
         </VanSearch> -->
         <OpSearch 
-            show-action
-            v-model="searchValue"
+            
+            
             shape="round" 
             background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
             placeholder="Enter your Favourite Food"
-            @search="onSearch"
-            @cancel="onCancel"
-            @clear="onClear"
+            @inputClick="emits('searchClick')"
         >
-            <!-- <template #right-icon>
-                <div>Search</div>
+            <template #right-icon>
+                <div @click="emits('searchClick')">Search</div>
 
-            </template> -->
+            </template>
         </OpSearch>
         <div class="search-recommend">
             <div v-for="v in recomments " :key="v.value" class="tag">{{ v.label }}</div>
