@@ -1,17 +1,34 @@
 <script setup lang="ts">
+import OpSearch from '@/components/OpSearch.vue';
+import { fetchSearchData } from '@/api/search'
+import { ref } from 'vue'
 interface IEmits {
     (e: 'cancel'): void
 }
 const emits = defineEmits<IEmits>()
 
-
+const searchValue = ref('')
+const onSearch = async (v?: string | number) => {
+  console.log('====onSearch', v)
+  const { list } = await fetchSearchData (v as string)
+}
 
 </script>
 
 
 
 <template>
-    <div class="search-view" @click="emits('cancel')">Searching</div>
+    <div class="search-view" >
+        <OpSearch
+        show-action
+        v-model="searchValue"
+        shape="round"
+        placeholder="Please Enter Keyword Here"
+        @search="onSearch"
+        @cancel="emits('cancel')"
+        ></OpSearch>
+
+    </div>
 
 
 

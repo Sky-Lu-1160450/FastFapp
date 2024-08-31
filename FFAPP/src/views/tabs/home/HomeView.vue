@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TheTop from './components/TheTop.vue';
 import SearchView from '@/views/search/SearchView.vue'
+
 import { useToggle } from '@/use/useToggle'
 
 
@@ -22,13 +23,23 @@ const [isSearchViewShown, toggleSearchView] = useToggle(false)
 
 <template>
     <div class="home-page">
+    <!-- This will show the value in the UI -->
+    <Transition name="fade">
         <SearchView v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchView>
-        <TheTop :recomments="recomments" @searchClick="toggleSearchView"/>
+    </Transition>
 
+    <TheTop :recomments="recomments" @searchClick="toggleSearchView"/>
     </div>
+
     
 </template>
-<style>
-.test{
-    font-size: 39px;
-}</style>
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
