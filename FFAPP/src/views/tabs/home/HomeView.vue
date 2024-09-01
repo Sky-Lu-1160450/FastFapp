@@ -1,9 +1,13 @@
 <script setup lang="ts">
+
 import TheTop from './components/TheTop.vue';
 import SearchView from '@/views/search/SearchView.vue'
 
 import { useToggle } from '@/use/useToggle'
-
+import { useAsync } from '@/use/useAsync';
+import { fetchHomePageData } from '@/api/home';
+import type { IHomeInfo } from '@/types';
+import OpLoadingView from '@/components/OpLoadingView.vue';
 
 const recomments =[
     { 
@@ -18,17 +22,30 @@ const recomments =[
     },
 ]
 const [isSearchViewShown, toggleSearchView] = useToggle(false)
+
+const {data, pending} = useAsync(fetchHomePageData,{} as IHomeInfo)
+
 </script>
 
 
 <template>
     <div class="home-page">
-    <!-- This will show the value in the UI -->
-    <Transition name="fade">
-        <SearchView v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchView>
-    </Transition>
+        <!-- This will show the value in the UI -->
+        <Transition name="fade">
+            <SearchView v-if="isSearchViewShown" @cancel="toggleSearchView"></SearchView>
+        </Transition>
 
-    <TheTop :recomments="recomments" @searchClick="toggleSearchView"/>
+        <TheTop :recomments="recomments" @searchClick="toggleSearchView"/>
+        <OpLoadingView :loading="pending" type="skeleton">
+            
+            <div>
+                {{ data }}
+
+            </div>
+        </OpLoadingView>
+
+    
+    
     </div>
 
     

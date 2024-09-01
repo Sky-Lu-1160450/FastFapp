@@ -14,3 +14,28 @@ export interface ISearchResult {
     label: string
     resultCount: number
 }
+
+export interface IHomeInfo {
+    banner: IBanner
+    searchRecomments: ISearchRecomment[]
+    transformer: ITransformer[]
+    coutdown: ICountdown
+    activities: string[]
+
+
+}
+
+export interface IBanner {
+    imgUrl: string
+
+}
+
+export interface ITransformer {
+    imgUrl: string
+    label: string
+}
+
+export interface ICountdown {
+    time: number
+    goods:IGood
+}
