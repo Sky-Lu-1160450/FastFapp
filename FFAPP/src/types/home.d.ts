@@ -16,7 +16,7 @@ export interface ISearchResult {
 }
 
 export interface IHomeInfo {
-    banner: IBanner
+    banner: IBanner[]
     searchRecomments: ISearchRecomment[]
     transformer: ITransformer[]
     scrollBarInfoList:IScrollBarInfo[]

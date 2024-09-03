@@ -2,6 +2,7 @@
 
 import TheTop from './components/TheTop.vue';
 import SearchView from '@/views/search/SearchView.vue'
+import TheTransformer from './components/TheTransformer.vue'
 import ScrollBar from './components/ScrollBar.vue';
 import { useToggle } from '@/use/useToggle'
 import { useAsync } from '@/use/useAsync';
@@ -38,10 +39,10 @@ const {data, pending} = useAsync(fetchHomePageData,{} as IHomeInfo)
         <TheTop :recomments="recomments" @searchClick="toggleSearchView"/>
         <OpLoadingView :loading="pending" type="skeleton">
             
-            <div>
-                {{ data }}
-
+            <div class="home-page__banner">
+                <img v-for="v in data.banner" :key="v.imgUrl" :src="v.imgUrl" />
             </div>
+            <TheTransformer :data="data.transformer" />
             <ScrollBar :data="data.scrollBarInfoList" />
         </OpLoadingView>
 
