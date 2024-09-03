@@ -2,7 +2,7 @@
 
 import TheTop from './components/TheTop.vue';
 import SearchView from '@/views/search/SearchView.vue'
-
+import ScrollBar from './components/ScrollBar.vue';
 import { useToggle } from '@/use/useToggle'
 import { useAsync } from '@/use/useAsync';
 import { fetchHomePageData } from '@/api/home';
@@ -42,6 +42,7 @@ const {data, pending} = useAsync(fetchHomePageData,{} as IHomeInfo)
                 {{ data }}
 
             </div>
+            <ScrollBar :data="data.scrollBarInfoList" />
         </OpLoadingView>
 
     
