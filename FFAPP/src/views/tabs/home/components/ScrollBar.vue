@@ -73,18 +73,41 @@ onMounted(() => {
 .home-scroll-bar {
   --bean-color: rgb(252, 164, 40);
   --hongbao-color: rgb(252, 68, 25);
+
   &__swipe {
     background: white;
     border-radius: 8px;
     margin: 5px 10px;
     font-size: 13px;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; // Enable vertical scrolling
     height: v-bind(heightPx);
+
+    /* Modern Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px; /* Width of the scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Background color of the scrollbar track */
+      border-radius: 10px; /* Rounded edges for the track */
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--bean-color); /* Scrollbar thumb color */
+      border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+      border: 2px solid transparent; /* Add some padding inside the thumb */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--hongbao-color); /* Change color when hovering over scrollbar */
+    }
+
     .swipe-item {
       height: v-bind(heightPx);
     }
   }
+
   .scroll-bar__info {
     display: flex;
     justify-content: space-around;
@@ -146,4 +169,5 @@ onMounted(() => {
     }
   }
 }
+
 </style>
