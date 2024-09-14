@@ -33,19 +33,21 @@ const emits = defineEmits<IEmits>()
 
             </template> 
         </VanSearch> -->
-        <OpSearch 
-            
-            
-            shape="round" 
-            background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
-            placeholder="Enter your Favourite Food"
-            @inputClick="emits('searchClick')"
-        >
-            <template #right-icon>
-                <div @click="emits('searchClick')">Search</div>
+        <VanSticky>
+            <OpSearch 
+                
+                
+                shape="round" 
+                background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
+                placeholder="Enter your Favourite Food"
+                @inputClick="emits('searchClick')"
+            >
+                <template #right-icon>
+                    <div @click="emits('searchClick')">Search</div>
 
-            </template>
-        </OpSearch>
+                </template>
+            </OpSearch>
+        </VanSticky>
         <div class="search-recommend">
             <div v-for="v in recomments " :key="v.value" class="tag">{{ v.label }}</div>
         </div>
