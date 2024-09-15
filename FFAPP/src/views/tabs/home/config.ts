@@ -1,45 +1,45 @@
 import Todo from '@/components/OpTodo.vue'
-
+import ShopList from './components/ShopList.vue'
 
 
 export const HOME_TABS = [
     {
-      title: '附近推荐',
+      title: 'Recommand',
       value: 'recommend',
-      component: Todo,
+      component: ShopList,
     },
     {
-      title: '发现好菜',
+      title: 'Sweet',
       value: '1',
       component: Todo,
     },
     {
-      title: '超市',
+      title: 'Spice',
       value: '2',
       component: Todo,
     },
     {
-      title: '水果',
+      title: 'Salty',
       value: '3',
       component: Todo,
     },
     {
-      title: '买菜',
+      title: 'Noodles',
       value: '4',
       component: Todo,
     },
     {
-      title: '到店吃',
+      title: 'Rice',
       value: '5',
       component: Todo,
     },
     {
-      title: '玩乐',
+      title: 'Fruit',
       value: '6',
       component: Todo,
     },
     {
-      title: '医药',
+      title: 'Discount',
       value: '6',
       component: Todo,
     },
