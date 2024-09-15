@@ -4,6 +4,9 @@ import { ref } from 'vue'
 import { fetchShopList } from '@/api/shop'
 import OpList from '@/components/list/OpList'
 
+import ShopItem from './ShopItem.vue'
+
+
 
 let page = 1
 const shopList = ref([] as IShop[])
@@ -32,7 +35,7 @@ const onLoad = async () => {
       finished-text="End"
       @load="onLoad"
     >
-      <div style="height: 100px" v-for="v in shopList" :key="v.id">{{ v.shopName }}</div>
+      <ShopItem v-for="v in shopList" :key="v.id" :data="v"/>
     </OpList>
   </div>
 </template>

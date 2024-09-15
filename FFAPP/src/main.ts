@@ -8,10 +8,10 @@ import router from './router'
 
 import { Dialog } from 'vant'
 import 'vant/lib/index.css'
-
+import lazyPlugin from './directives/lazyLoading'
 const app = createApp(App)
 
-
+import './assets/common.scss'
 
 
 app.use(createPinia())
@@ -26,6 +26,7 @@ app.use(Skeleton)
 app.use(Tabs)
 app.use(Tab)
 app.use(Sticky)
+app.use(lazyPlugin)
 
 const rootValue = 16
 const rootWidth = 390
