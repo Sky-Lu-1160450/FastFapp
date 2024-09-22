@@ -9,6 +9,7 @@ import OpTodo from '@/components/OpTodo.vue'
 import { ref } from 'vue'
 import GoodsList from './components/GoodsList.vue';
 import ShopCart from './components/ShopCart.vue';
+import { useLockScroll } from '@/use/useLockScroll'
 
 const TAB_LIST = [
   {
@@ -54,6 +55,7 @@ const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
   tops: [],
 })
 
+useLockScroll(() => active.value === 1)
 const onClickLeft = () => history.back()
 </script>
 

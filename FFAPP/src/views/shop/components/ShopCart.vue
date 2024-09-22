@@ -7,7 +7,7 @@ import { useToggle } from '@/use/useToggle'
 import { useTransition } from '@/use/useTransition'
 import { useEventBus } from '@/use/useEventBus'
 import GoodsItem from './GoodsItem.vue'
-///import { showConfirmDialog } from 'vant'
+import { Dialog } from 'vant'
 
 const store = useCartStore()
 const packageFee = ref(5)
@@ -24,6 +24,19 @@ const showCartListPopup = () => {
     return
   }
   toggleCartListShown()
+}
+
+const removeAll = () => {
+  Dialog({
+    title: '确定清空购物车?'
+  })
+    .then(() => {
+      store.setCartItems([])
+      toggleCartListShown()
+    })
+    .catch(() => {
+      // on cancel
+    })
 }
 
 </script>
@@ -45,7 +58,7 @@ const showCartListPopup = () => {
             <span class="all-label">全选</span>
           </VanCheckbox>
           <div class="all-total">(已选{{ store.total }}件)</div>
-          /
+          <span class="all-remove" @click="removeAll"><VanIcon name="delete-o" />清空</span>
         </div>
         <div class="popup__goods">
           <VanCheckboxGroup

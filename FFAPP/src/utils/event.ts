@@ -9,6 +9,7 @@ export class EventEmitter {
   constructor() {
     this.events = {}
   }
+
   on(type: string, fn: Fn) {
     if (!this.events[type]) {
       this.events[type] = []
@@ -37,7 +38,6 @@ export class EventEmitter {
           events.splice(count, 1)
         }
       }
-
       return this
     }
   }
@@ -59,7 +59,7 @@ export class EventEmitter {
     }
   }
 
-  destroy() {
+  destory() {
     this.events = {}
   }
 }
