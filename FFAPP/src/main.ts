@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import { Tabbar, TabbarItem , Search, Icon, Loading, Skeleton,Tabs,Tab,Sticky,NavBar,Form,CellGroup,Field,Button,ActionSheet} from 'vant'
+import { Tabbar, TabbarItem , Search, Icon, Loading, Skeleton,Tabs,Tab,Sticky,NavBar,Form,CellGroup,Field,Button,ActionSheet,Sidebar,SidebarItem,Popup,Checkbox,CheckboxGroup,} from 'vant'
 
 import App from './App.vue'
 import router from './router'
@@ -33,7 +33,11 @@ app.use(CellGroup)
 app.use(Field)
 app.use(Button)
 app.use(ActionSheet)
-
+app.use(Sidebar)
+app.use(SidebarItem)
+app.use(Popup)
+app.use(Checkbox)
+app.use(CheckboxGroup)
 const rootValue = 16
 const rootWidth = 390
 const deviceWidth = document.documentElement.clientWidth
