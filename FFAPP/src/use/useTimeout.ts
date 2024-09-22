@@ -1,7 +1,7 @@
-import { onUnmounted } from 'vue'
+import { onUnmounted as _onUnmounted } from 'vue'
 
-export function useTimeout(fn: () => void, delay: number) {
-  const timer = setTimeout(() => {
+export function useTimeout(fn: () => void, delay?: number, onUnmounted = _onUnmounted) {
+  const timer = window.setTimeout(() => {
     fn()
   }, delay)
   const clear = () => {
