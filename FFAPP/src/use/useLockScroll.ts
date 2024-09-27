@@ -1,4 +1,4 @@
-import { onDeactivated, onUnmounted, watch } from 'vue'
+import { onBeforeUnmount, onDeactivated, watch } from 'vue'
 import { onMountedOrActivated } from './onMountedOrActivated'
 //控制页面滚动
 const BODY_LOCK_CLASS = 'op-overflow-hidden'
@@ -26,7 +26,7 @@ export function useLockScroll(shouldLock: () => boolean) {
   })
   const destroy = () => shouldLock() && unLock()
   onDeactivated(() => destroy)
-  onUnmounted(() => destroy)
+  onBeforeUnmount(() => destroy)
   watch(shouldLock, (v) => {
     if (v) {
       lock()
