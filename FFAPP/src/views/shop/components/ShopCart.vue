@@ -8,13 +8,16 @@ import { useTransition } from '@/use/useTransition'
 import { useEventBus } from '@/use/useEventBus'
 import GoodsItem from './GoodsItem.vue'
 import { Dialog } from 'vant'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const store = useCartStore()
 const packageFee = ref(5)
 const cartLogo = computed(() => (store.total ? CartLogo : EmptyCartLogo))
 const [isCartListShown, toggleCartListShown] = useToggle(false)
 const eventBus = useEventBus()
 const { items, start, beforeEnter, enter, afterEnter } = useTransition()
+
 eventBus.on('cart-add', (el: any) => {
   start(el)
 })
@@ -28,7 +31,7 @@ const showCartListPopup = () => {
 
 const removeAll = () => {
   Dialog({
-    title: '确定清空购物车?'
+    title: '确定清空购物车?',
   })
     .then(() => {
       store.setCartItems([])
@@ -37,6 +40,28 @@ const removeAll = () => {
     .catch(() => {
       // on cancel
     })
+}
+
+// Function to handle checkout and place order
+const checkout = () => {
+  if (!store.total) {
+    Dialog.alert({
+      title: 'Error',
+      message: 'No items in the cart.',
+    })
+    return
+  }
+
+  // Simulate API call or action to place order
+  Dialog.confirm({
+    title: 'Place Order',
+    message: `Are you sure you want to place the order for $${store.finalPrice}?`
+  }).then(() => {
+    // Handle successful order placement
+    router.push({ name: 'order-confirmation' })  // Redirect to a confirmation page after placing the order
+  }).catch(() => {
+    // User canceled the order
+  })
 }
 
 </script>
@@ -73,10 +98,28 @@ const removeAll = () => {
           </VanCheckboxGroup>
         </div>
         <div class="popup__fee">
-          <span>包装费</span>
+          <span>Delivery Fee</span>
           <span class="label">
-            另需<span class="fee">&yen; {{ packageFee }}</span>
+            $<span>{{ store.deliveryFee }}</span>
           </span>
+        </div>
+        <!-- Final Price -->
+        <div class="popup__fee">
+          <span>Final Price</span>
+          <span class="label">
+            $<span>{{ store.finalPrice }}</span>
+          </span>
+        </div>
+        <div class="popup__fee checkout-section">
+          <div class="final-price">
+            <span>Final Price</span>
+            <span class="label">
+              $<span>{{ store.finalPrice }}</span>
+            </span>
+          </div>
+          <div class="checkout-btn">
+            <VanButton type="primary" round @click="checkout">Checkout and Place Order</VanButton>
+          </div>
         </div>
       </div>
     </VanPopup>
@@ -171,18 +214,36 @@ const removeAll = () => {
       }
     }
     .popup__fee {
+      display: flex;
+      justify-content: space-between; /* Aligns elements to opposite ends */
+      align-items: center; /* Vertically centers the items */
       padding: 14px;
       font-size: 14px;
       background: rgb(254, 254, 254);
 
       .label {
-        margin-left: 30px;
+      
         font-size: 14px;
         color: gray;
         .fee {
           color: red;
           font-size: 16px;
         }
+      }
+      .total-price {
+        background-color: #007bff; /* Modern blue color */
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 25px; /* Rounded button shape */
+        cursor: pointer;
+        text-align: center;
+
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+      }
+      .total-price:hover {
+        background-color: #0056b3; /* Darker blue on hover */
       }
     }
   }
