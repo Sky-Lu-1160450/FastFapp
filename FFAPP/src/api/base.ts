@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Dialog } from 'vant';
 
 const instance = axios.create ({
-    baseURL : '/api'
+    baseURL: 'http://localhost:8000/api',  // Ensure this points to the backend
 
 })
 

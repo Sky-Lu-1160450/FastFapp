@@ -9,6 +9,8 @@ import { useEventBus } from '@/use/useEventBus'
 import GoodsItem from './GoodsItem.vue'
 import { Dialog } from 'vant'
 import { useRouter } from 'vue-router'
+import { placeOrder } from '@/api/order'
+
 
 const router = useRouter()
 const store = useCartStore()
@@ -42,28 +44,55 @@ const removeAll = () => {
     })
 }
 
-// Function to handle checkout and place order
-const checkout = () => {
+const checkout = async () => {
   if (!store.total) {
     Dialog.alert({
       title: 'Error',
       message: 'No items in the cart.',
-    })
-    return
+    });
+    return;
   }
 
-  // Simulate API call or action to place order
-  Dialog.confirm({
-    title: 'Place Order',
-    message: `Are you sure you want to place the order for $${store.finalPrice}?`
-  }).then(() => {
-    // Handle successful order placement
-    router.push({ name: 'order-confirmation' })  // Redirect to a confirmation page after placing the order
-  }).catch(() => {
-    // User canceled the order
-  })
-}
+  try {
+    // Confirm before placing the order
+    await Dialog.confirm({
+      title: 'Place Order',
+      message: `Are you sure you want to place the order for $${store.finalPrice}?`
+    });
 
+    // Prepare order data
+    const orderData = {
+      items: store.state.items,
+      totalPrice: parseFloat(store.totalPrice),
+      deliveryFee: store.deliveryFee,
+    };
+
+    // Call the backend to place the order
+    await placeOrder(orderData); // No need to expect an order ID in the response
+    
+
+    
+
+    // Show success message
+    await Dialog.alert({
+      title: 'Order Successful',
+      message: 'Your order has been placed successfully.',
+    });
+
+    // Clear the cart and redirect to the confirmation page
+    store.setCartItems([]);  // Clear the cart after placing the order
+    router.push({ name: 'home' });  // Redirect to confirmation page
+
+    } catch (error: any) {  // Here we type error as 'any'
+    console.error(error);
+    
+    // Handle cancellation or failed order placement
+    Dialog.alert({
+      title: 'Error',
+      message: error instanceof Error ? error.message : 'Failed to place the order. Please try again later.',
+    });
+  }
+};
 </script>
 
 <template>
