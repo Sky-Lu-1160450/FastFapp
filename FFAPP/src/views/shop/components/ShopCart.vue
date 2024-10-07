@@ -1,49 +1,49 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useCartStore } from '@/stores/cart'
-import CartLogo from '@/assets/imgs/shop_page/shop-cart/shop-cart.png'
-import EmptyCartLogo from '@/assets/imgs/shop_page/shop-cart/shop-cart-o.png'
-import { useToggle } from '@/use/useToggle'
-import { useTransition } from '@/use/useTransition'
-import { useEventBus } from '@/use/useEventBus'
-import GoodsItem from './GoodsItem.vue'
-import { Dialog } from 'vant'
-import { useRouter } from 'vue-router'
-import { placeOrder } from '@/api/order'
+import { ref, computed } from 'vue';
+import { useCartStore } from '@/stores/cart';
+import { useUserStore } from '@/stores/user';  // Make sure this import is added
+import CartLogo from '@/assets/imgs/shop_page/shop-cart/shop-cart.png';
+import EmptyCartLogo from '@/assets/imgs/shop_page/shop-cart/shop-cart-o.png';
+import { useToggle } from '@/use/useToggle';
+import { useTransition } from '@/use/useTransition';
+import { useEventBus } from '@/use/useEventBus';
+import GoodsItem from './GoodsItem.vue';
+import { Dialog } from 'vant';
+import { useRouter } from 'vue-router';
+import { placeOrder } from '@/api/order';
 
-
-const router = useRouter()
-const store = useCartStore()
-const packageFee = ref(5)
-const cartLogo = computed(() => (store.total ? CartLogo : EmptyCartLogo))
-const [isCartListShown, toggleCartListShown] = useToggle(false)
-const eventBus = useEventBus()
-const { items, start, beforeEnter, enter, afterEnter } = useTransition()
+const router = useRouter();
+const store = useCartStore();
+const userStore = useUserStore(); // Use this store to get the userId
+const packageFee = ref(5);
+const cartLogo = computed(() => (store.total ? CartLogo : EmptyCartLogo));
+const [isCartListShown, toggleCartListShown] = useToggle(false);
+const eventBus = useEventBus();
+const { items, start, beforeEnter, enter, afterEnter } = useTransition();
 
 eventBus.on('cart-add', (el: any) => {
-  start(el)
-})
+  start(el);
+});
 
 const showCartListPopup = () => {
   if (!store.total) {
-    return
+    return;
   }
-  toggleCartListShown()
-}
+  toggleCartListShown();
+};
 
 const removeAll = () => {
   Dialog({
     title: '确定清空购物车?',
   })
     .then(() => {
-      store.setCartItems([])
-      toggleCartListShown()
+      store.setCartItems([]);
+      toggleCartListShown();
     })
     .catch(() => {
       // on cancel
-    })
-}
-
+    });
+};
 const checkout = async () => {
   if (!store.total) {
     Dialog.alert({
@@ -53,11 +53,27 @@ const checkout = async () => {
     return;
   }
 
+  // Check if the user is logged in
+  const userId = String(userStore.state.userInfo.id);
+
+  console.log('User Info:', userStore.state.userInfo);
+  console.log('User ID:', userId);
+
+  if (!userId || userId === 'undefined' || userId === '') {
+    Dialog.alert({
+      title: 'Error',
+      message: 'You must be logged in to place an order.',
+    });
+    // Optionally, redirect to the login page
+    router.push({ name: 'login' });
+    return;
+  }
+
   try {
     // Confirm before placing the order
     await Dialog.confirm({
       title: 'Place Order',
-      message: `Are you sure you want to place the order for $${store.finalPrice}?`
+      message: `Are you sure you want to place the order for $${store.finalPrice}?`,
     });
 
     // Prepare order data
@@ -65,34 +81,43 @@ const checkout = async () => {
       items: store.state.items,
       totalPrice: parseFloat(store.totalPrice),
       deliveryFee: store.deliveryFee,
+      userId: userId,
     };
 
+    console.log('Placing order with data:', orderData);
+
     // Call the backend to place the order
-    await placeOrder(orderData); // No need to expect an order ID in the response
-    
+    const response = await placeOrder(orderData);
 
-    
+    console.log('Order response received from backend:', response);
 
-    // Show success message
-    await Dialog.alert({
-      title: 'Order Successful',
-      message: 'Your order has been placed successfully.',
-    });
+    if (response && response.orderId) {
+      // Show success message
+      await Dialog.alert({
+        title: 'Order Successful',
+        message: 'Your order has been placed successfully.',
+      });
 
-    // Clear the cart and redirect to the confirmation page
-    store.setCartItems([]);  // Clear the cart after placing the order
-    router.push({ name: 'home' });  // Redirect to confirmation page
+      // Clear the cart and redirect to the home page
+      store.setCartItems([]);  // Clear the cart after placing the order
+      router.push({ name: 'home' });  // Redirect to the home page
+    } else {
+      throw new Error('Unexpected response format');
+    }
 
-    } catch (error: any) {  // Here we type error as 'any'
-    console.error(error);
-    
-    // Handle cancellation or failed order placement
+  } catch (error: any) {
+    console.error('An error occurred during order placement:', error);
+
+    const errorMessage = error?.message || 'Failed to place the order. Please try again later.';
+
+    // Show error message
     Dialog.alert({
       title: 'Error',
-      message: error instanceof Error ? error.message : 'Failed to place the order. Please try again later.',
+      message: errorMessage,
     });
   }
 };
+
 </script>
 
 <template>

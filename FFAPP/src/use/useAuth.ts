@@ -11,11 +11,13 @@ export function useAuth() {
   const login = async (data: ILoginInfo) => {
     const { token, userInfo } = await auth(data);
     store.setInfo({ token, userInfo });
+    console.log('User logged in:', userInfo);  // Log the userInfo object after login
   };
 
   // Register function
   const register = async (userData: { username: string; password: string; nickname: string; avatar?: string }) => {
     await registerUser(userData);  // Call the registerUser API
+    console.log('User registered:', userData);  // Log user data after registration
   };
 
   const logout = () => {
