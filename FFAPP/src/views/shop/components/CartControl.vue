@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { IGood } from '@/types'
+import type { IGood } from '@/types'
 import { useCartStore } from '@/stores/cart'
 import { useEventBus } from '@/use/useEventBus'
 interface IProps {

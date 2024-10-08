@@ -1,16 +1,28 @@
 <script setup lang="ts">
-import type { ILoginInfo } from '@/types'
-import { ref } from 'vue'
-import { useAuth } from '@/use/useAuth'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuth } from '@/use/useAuth';
 
-const username = ref('')
-const password = ref('')
-const onClickLeft = () => history.back()
-const { login } = useAuth()
-const onSubmit = async (data: ILoginInfo) => {
-  await login(data)
-  onClickLeft()
-}
+const username = ref('');
+const password = ref('');
+const router = useRouter();
+const { login } = useAuth();
+
+const onClickLeft = () => history.back();
+
+const onSubmit = async () => {
+  try {
+    await login({ username: username.value, password: password.value });
+    onClickLeft();  // Go back on successful login
+  } catch (error) {
+    console.error('Login failed:', error);
+  }
+};
+
+// Navigate to the registration page
+const goToRegister = () => {
+  router.push({ name: 'register' });
+};
 </script>
 
 <template>
@@ -22,25 +34,26 @@ const onSubmit = async (data: ILoginInfo) => {
           v-model="username"
           name="username"
           label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请填写密码' }]"
+          placeholder="请输入用户名"
+          :rules="[{ required: true, message: '请填写用户名' }]"
         />
         <VanField
           v-model="password"
           name="password"
           label="密码"
-          placeholder="密码"
+          placeholder="请输入密码"
           :rules="[{ required: true, message: '请填写密码' }]"
         />
       </VanCellGroup>
       <div style="margin: 16px">
-        <VanButton round block type="primary" native-type="submit">提交</VanButton>
+        <VanButton round block type="primary" native-type="submit">登录</VanButton>
+        <VanButton round block type="default" @click="goToRegister">注册</VanButton>  <!-- Register button -->
       </div>
     </VanForm>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .login-page {
   .login-page__form {
     margin-top: 100px;

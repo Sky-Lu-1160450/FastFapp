@@ -21,6 +21,17 @@ export const useCartStore = defineStore('cart', () => {
   )
   const isAllChecked = computed(() => state.items.length === state.checkedIds.length)
 
+
+  // Delivery Fee Computation: $0 if total price >= $60, otherwise $10
+  const deliveryFee = computed(() => {
+    return parseFloat(totalPrice.value) >= 60 ? 0 : 10
+  })
+
+  // Final Price Computation: Total Price + Delivery Fee
+  const finalPrice = computed(() => {
+    return (parseFloat(totalPrice.value) + deliveryFee.value).toFixed(2)
+  })
+
   const cartCountById = (id: number) => {
     return state.items.find((v) => v.id === id)?.cartCount
   }
@@ -69,6 +80,8 @@ export const useCartStore = defineStore('cart', () => {
     total,
     totalPrice,
     totalOldPrice,
+    deliveryFee, // Added delivery fee
+    finalPrice,
     isAllChecked,
     cartCountById,
     pushProductToCart,

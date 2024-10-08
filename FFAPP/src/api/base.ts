@@ -2,12 +2,12 @@ import axios from 'axios'
 import { Dialog } from 'vant';
 
 const instance = axios.create ({
-    baseURL : '/api'
+    baseURL: 'http://localhost:8000/api',  // Ensure this points to the backend
 
 })
 
 instance.interceptors.response.use(
-    (response) => {
+    (response) => {  
         const { data: _data } = response;
         const { data, code, msg } = _data;
 

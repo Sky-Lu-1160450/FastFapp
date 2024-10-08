@@ -23,7 +23,7 @@ const TAB_LIST = [
     component: OpTodo,
   },
   {
-    value: 1,
+    value: 3,
     label: 'Shop',
     component: OpTodo,
   },
