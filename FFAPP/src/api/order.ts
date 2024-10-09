@@ -16,7 +16,34 @@ export const placeOrder = (orderData: { items: any[], totalPrice: number, delive
   });
 };
 
-// Explicitly specify the type of userId
-export const getUserOrders = (userId: string) => {
-  return axios.get(`/order/user/${userId}`).then(response => response.data);
+// Define the interface for an order item
+interface OrderItem {
+  id: number;
+  name: string;
+  quantity: number;
+}
+
+// Define the interface for an order response
+interface UserOrder {
+  id: number;
+  status: string;
+  address: string;
+  phone: string;
+  totalPrice: number;
+  items: OrderItem[];
+  createdAt: string;
+  userId: number;
+}
+
+// Function to fetch orders for the logged-in user
+export const getUserOrders = (userId: string): Promise<UserOrder[]> => {
+  return axios.get(`/order/user/${userId}`)
+    .then(response => {
+      console.log("Orders response received from backend:", response);
+      return response;
+    })
+    .catch(error => {
+      console.error("Failed to get user orders:", error);
+      throw error;
+    });
 };
