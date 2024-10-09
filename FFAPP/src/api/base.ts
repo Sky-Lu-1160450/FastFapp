@@ -11,7 +11,6 @@ instance.interceptors.response.use(
         const { data: _data } = response;
         const { data, code, msg } = _data;
 
-        console.log("Received response:", _data);
         if (code !== 0) {
             console.log("Triggering alert with message:", msg);
             Dialog.alert({
