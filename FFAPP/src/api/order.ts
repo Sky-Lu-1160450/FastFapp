@@ -8,10 +8,10 @@ interface PlaceOrderResponse {
 }
 
 // Update the placeOrder function to return a Promise of the typed response
-export const placeOrder = (orderData: { items: any[], totalPrice: number, deliveryFee: number, userId: string }): Promise<PlaceOrderResponse> => {
+export const placeOrder = (orderData: { items: any[], totalPrice: number, deliveryFee: number, userId: string,address: string }): Promise<PlaceOrderResponse> => {
   return axios.post<PlaceOrderResponse>('/order/place', orderData)
     .then(response => {
-      console.log("response 1", response)
+      console.log("Order placed response:", response)
       return response
   });
 };

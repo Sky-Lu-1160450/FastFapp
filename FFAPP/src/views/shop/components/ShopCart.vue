@@ -55,17 +55,19 @@ const checkout = async () => {
 
   // Check if the user is logged in
   const userId = String(userStore.state.userInfo.id);
+  const address = userStore.state.userInfo.address;  // Get the user's address from the user store
 
   console.log('User Info:', userStore.state.userInfo);
   console.log('User ID:', userId);
+  console.log('User Address:', address);
 
-  if (!userId || userId === 'undefined' || userId === '') {
+  if (!userId || userId === 'undefined' || userId === '' || !address) {
     Dialog.alert({
       title: 'Error',
-      message: 'You must be logged in to place an order.',
+      message: 'You must be logged in and have an address to place an order.',
     });
     // Optionally, redirect to the login page
-    router.push({ name: 'login' });
+    router.push({ name: 'me' });
     return;
   }
 
@@ -82,6 +84,7 @@ const checkout = async () => {
       totalPrice: parseFloat(store.totalPrice),
       deliveryFee: store.deliveryFee,
       userId: userId,
+      address: address,
     };
 
     console.log('Placing order with data:', orderData);
