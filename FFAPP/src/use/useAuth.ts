@@ -10,7 +10,17 @@ export function useAuth() {
   // Login function
   const login = async (data: ILoginInfo) => {
     const { token, userInfo } = await auth(data);
-    store.setInfo({ token, userInfo });
+
+    // Ensure userInfo includes address and id
+    store.setInfo({
+      token,
+      userInfo: {
+        ...userInfo,  // Spread the existing userInfo
+        address: userInfo.address || '',  // Provide a default empty address if not set
+        id: userInfo.id || ''  // Ensure id is set
+      }
+    });
+
     console.log('User logged in:', userInfo);  // Log the userInfo object after login
   };
 
@@ -27,7 +37,7 @@ export function useAuth() {
   return {
     user,
     login,
-    register,  // Add register function
+    register,
     logout,
   };
 }
