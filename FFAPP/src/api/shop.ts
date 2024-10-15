@@ -10,8 +10,14 @@ export const fetchShopList = ({ _page, _limit }: IPaginate) => {
   })
 }
 
-export const fetchShopPageData = (id: string) => {
-  return axios.get<IShopDetail, IShopDetail>('shop_page', {
-    params: { id },
-  })
-}
+export const fetchShopPageData = async (id: string): Promise<IShopDetail> => {
+  try {
+    const response = await axios.get<IShopDetail>(`shop_page/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching shop data:", error);
+    throw error;
+  }
+};
+
+

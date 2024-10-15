@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import type { IShopDetail } from '@/types'
+import type { IShopDetail } from '@/types';
 import { computed } from 'vue';
-import { useToggle } from '@/use/useToggle';
 
 interface IProps {
-  data: IShopDetail
+  data: IShopDetail;
 }
 
-enum DiscountEnum {
-  Reduction = 1,
-  Delivery = 2,
-  Special = 3,
-  Optional = 4,
-}
+const props = defineProps<IProps>();
 
-const props = defineProps<IProps>()
+// Log the received data to debug
+console.log("Received shop data:", props.data);
 
+const services = computed(() => props.data.services);
+console.log("Services:", services.value);
+
+// Limit services to top 3 or fewer
 const topThreeServices = computed(() => props.data.services.slice(0, 3));
+
+// Compute the reduction discounts (if any)
 const reduction = computed(() => {
-  const reduction = props.data.discounts.find((v) => v.type === DiscountEnum.Reduction);
+  const reduction = props.data.discounts.find((v) => v.type === 1); // Assuming 1 is Reduction type
   return reduction ? reduction.content : [];
 });
+
+// Map the reductions for display
 const reductionLabel = computed(() => {
   return reduction.value.map((v) => `$${v.if} Spend $${v.count} off`);
 });
@@ -28,40 +31,47 @@ const reductionLabel = computed(() => {
 
 <template>
   <div class="shop-header">
+    <!-- Shop Info Section -->
     <div class="shop-header__info">
       <div class="info__left">
+        <!-- Shop Name -->
         <div class="shop-name op-ellipsis">
-          {{ data.shopName }}<span v-if="data.branch">({{ data.branch }})</span>
+          {{ data.shopName }}
         </div>
       </div>
 
+      <!-- Delivery Tag (Optional) -->
       <div class="delivery">
-        <div v-if="data.deliveryTags" class="delivery-tag op-thin-border">
+        <div v-if="data.deliveryTags && data.deliveryTags.length" class="delivery-tag op-thin-border">
           {{ data.deliveryTags[0] }}
         </div>
       </div>
 
+      <!-- Shop Image -->
       <div class="info__right">
-        <img :src="data.postUrl" />
+        <img :src="data.postUrl" alt="Shop Image" />
       </div>
     </div>
 
-    <div class="shop-header__service">
-      <div v-for="v in topThreeServices" :key="v.label" class="service">
-        <VanIcon name="passed"></VanIcon>
-        {{ v.label }}
+    <!-- Services (Top 3) -->
+    <div class="shop-header__service" v-if="topThreeServices.length">
+      <div v-for="service in topThreeServices" :key="service.label" class="service">
+        <VanIcon name="passed" /> {{ service.label }}
       </div>
     </div>
 
-    <div class="shop-header__announcement">{{ data.announcement }}</div>
-
-    <div class="shop-header__discounts">
+    <!-- Announcement and Delivery Speed -->
+    <div v-if="data.announcement" class="shop-header__announcement">{{ data.announcement }}</div>
+    <div v-if="data.deliverySpeed" class="shop-header__announcement">{{ data.deliverySpeed }}</div>
+    
+    <!-- Discounts (Optional) -->
+    <div v-if="reductionLabel.length" class="shop-header__discounts">
       <div class="flex">
-        <div v-for="v in reductionLabel" :key="v" class="activity op-thin-border">
-          {{ v }}
+        <div v-for="reduction in reductionLabel" :key="reduction" class="activity op-thin-border">
+          {{ reduction }}
         </div>
       </div>
-      <VanIcon name="arrow-down" color="rgb(207, 207, 207)"></VanIcon>
+      <VanIcon name="arrow-down" color="rgb(207, 207, 207)" />
     </div>
   </div>
 </template>
@@ -70,30 +80,29 @@ const reductionLabel = computed(() => {
 .shop-header {
   background: white;
   border-radius: 10px;
-  font-size: 14px; /* Increased font size for better readability */
-  padding: 15px; /* Added padding for better spacing */
+  font-size: 14px;
+  padding: 15px;
   margin: var(--op-page-padding);
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1); /* Slightly lighter shadow for a cleaner look */
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 
   &__info {
     display: flex;
-    align-items: center; /* Align elements vertically */
-    margin-bottom: 10px; /* Added more space between elements */
+    align-items: center;
+    margin-bottom: 10px;
 
     .info__left {
       flex: 1;
-
       .shop-name {
-        font-size: 22px; /* Larger font size for shop name */
+        font-size: 22px;
         font-weight: bold;
         margin: 0;
       }
     }
 
     .info__right img {
-      width: 60px; /* Increased size for shop image */
-      height: 60px;
-      border-radius: 10px; /* Added border-radius for a rounded image */
+      width: 85px;
+      height: 85px;
+      border-radius: 10px;
     }
   }
 
@@ -115,9 +124,9 @@ const reductionLabel = computed(() => {
   }
 
   &__announcement {
-    color: #555; /* Darkened color for better visibility */
+    color: #555;
     font-size: 14px;
-    margin-bottom: 10px; /* Added margin for spacing */
+    margin-bottom: 10px;
   }
 
   &__discounts {
@@ -128,7 +137,7 @@ const reductionLabel = computed(() => {
     .flex {
       flex: 1;
       display: flex;
-      flex-wrap: wrap; /* Allows the discounts to wrap if they don't fit */
+      flex-wrap: wrap;
     }
 
     .activity {
@@ -137,7 +146,7 @@ const reductionLabel = computed(() => {
       padding: 3px 8px;
       margin-right: 8px;
       margin-bottom: 4px;
-      border-radius: 4px; /* Added rounded corners */
+      border-radius: 4px;
       border: 1px solid rgb(247, 68, 68);
     }
   }

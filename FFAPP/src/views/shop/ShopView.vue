@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useAsync } from '@/use/useAsync'
-import { fetchShopPageData } from '@/api/shop'
+import { fetchShopPageData } from '@/api/shop'; 
 import OpLoadingView from '@/components/OpLoadingView.vue'
 import ShopHeader from './components/ShopHeader.vue'
 import { PRIMARY_COLOR } from '@/config';
@@ -34,6 +34,26 @@ const active = ref(TAB_LIST[0].value);
 const route = useRoute()
 const { id } = route.params
 const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
+  // announcement: '',
+  // discounts: [],
+  // redbags: [],
+  // activitys: [],
+  // branch: '',
+  // comments: [],
+  // deliveryDistance: '',
+  // deliveryStrategy: '',
+  // deliveryStratingPrice: '',
+  // deliveryTags: [],
+  // deliveryTime: '',
+  // id: '',
+  // monthlyCount: 0,
+  // postUrl: '',
+  // bgUrl: '',
+  // score: 0,
+  // services: [],
+  // shopName: '',
+  // tops: [],
+
   announcement: '',
   discounts: [],
   redbags: [],

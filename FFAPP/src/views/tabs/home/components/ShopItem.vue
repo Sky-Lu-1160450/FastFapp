@@ -36,7 +36,7 @@ const gotoShop = (id: number | string) => {
       <div class="info__desc">
         <span class="score">{{ data.score }}</span>
         <span class="monthly-count">{{ data.monthlyCount }}</span>
-        <span class="delivery-time">{{ data.deliveryTime }}</span>
+        <span class="delivery-time">Delivery {{ data.deliveryTime }}</span>
         <span class="delivery-distance">Distance{{ data.deliveryDistance }}</span>
       </div>
       <div class="info__desc">
