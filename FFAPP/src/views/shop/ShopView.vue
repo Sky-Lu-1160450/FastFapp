@@ -34,25 +34,7 @@ const active = ref(TAB_LIST[0].value);
 const route = useRoute()
 const { id } = route.params
 const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
-  // announcement: '',
-  // discounts: [],
-  // redbags: [],
-  // activitys: [],
-  // branch: '',
-  // comments: [],
-  // deliveryDistance: '',
-  // deliveryStrategy: '',
-  // deliveryStratingPrice: '',
-  // deliveryTags: [],
-  // deliveryTime: '',
-  // id: '',
-  // monthlyCount: 0,
-  // postUrl: '',
-  // bgUrl: '',
-  // score: 0,
-  // services: [],
-  // shopName: '',
-  // tops: [],
+  
 
   announcement: '',
   discounts: [],
@@ -63,6 +45,7 @@ const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
   deliveryDistance: '',
   deliveryStrategy: '',
   deliveryStratingPrice: '',
+  deliverySpeed: '',  // Add deliverySpeed here to match the interface
   deliveryTags: [],
   deliveryTime: '',
   id: '',
