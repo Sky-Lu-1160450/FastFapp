@@ -3,8 +3,6 @@ import type { IShopDetail } from '@/types'
 import { computed } from 'vue';
 import { useToggle } from '@/use/useToggle';
 
-
-
 interface IProps {
   data: IShopDetail
 }
@@ -18,8 +16,6 @@ enum DiscountEnum {
 
 const props = defineProps<IProps>()
 
-
-
 const topThreeServices = computed(() => props.data.services.slice(0, 3));
 const reduction = computed(() => {
   const reduction = props.data.discounts.find((v) => v.type === DiscountEnum.Reduction);
@@ -28,168 +24,121 @@ const reduction = computed(() => {
 const reductionLabel = computed(() => {
   return reduction.value.map((v) => `$${v.if} Spend $${v.count} off`);
 });
-
-
 </script>
 
 <template>
   <div class="shop-header">
     <div class="shop-header__info">
-        <div class="info__left">
-            <div class="shop-name op-ellipsis">
-            {{ data.shopName }}<span v-if="data.branch">({{ data.branch }})</span>
-            </div>
+      <div class="info__left">
+        <div class="shop-name op-ellipsis">
+          {{ data.shopName }}<span v-if="data.branch">({{ data.branch }})</span>
         </div>
+      </div>
 
-        <div class="delivery">
-            <div v-if="data.deliveryTags" class="delivery-tag op-thin-border">
-                {{ data.deliveryTags[0] }}
-            </div>
-            <!-- <div class="delivery-time">{{ data.deliveryTime }}</div> -->
-            <!-- <div class="monthly-count">Monthly Sale {{ data.monthlyCount }}</div> -->
+      <div class="delivery">
+        <div v-if="data.deliveryTags" class="delivery-tag op-thin-border">
+          {{ data.deliveryTags[0] }}
         </div>
-        <div class="info__right">
-            <img :src="data.postUrl" />
-        </div>
+      </div>
+
+      <div class="info__right">
+        <img :src="data.postUrl" />
+      </div>
     </div>
+
     <div class="shop-header__service">
-        <div v-for="v in topThreeServices" :key="v.label" class="service">
-            <VanIcon name="passed"></VanIcon>
-            {{ v.label }}
-        </div>
+      <div v-for="v in topThreeServices" :key="v.label" class="service">
+        <VanIcon name="passed"></VanIcon>
+        {{ v.label }}
+      </div>
     </div>
-    <div class="shop-header__anouncement ">{{ data.announcement }}</div>
-    <div class="shop-header__redbags">
-        <div v-for="v in data.redbags" :key="v.type" class="redbag">
-            <span class="redbag-left">
-                $<span class="count">{{ v.count }}</span>
-                <span>{{ v.if }}</span>
-            </span>
-            <span class="redbag-right">Get</span>
-        </div>
-    </div>
-    <div class="shop-header__discounts" >
-        <div class="flex">
-            <div v-for="v in reductionLabel" :key="v" class="activity op-thin-border">
-                {{ v }}
-            </div>
-        </div>
-        <VanIcon name="arrow-down" color="rgb(207, 207, 207)"></VanIcon>
-        </div>
-    </div>
-    
 
+    <div class="shop-header__announcement">{{ data.announcement }}</div>
 
+    <div class="shop-header__discounts">
+      <div class="flex">
+        <div v-for="v in reductionLabel" :key="v" class="activity op-thin-border">
+          {{ v }}
+        </div>
+      </div>
+      <VanIcon name="arrow-down" color="rgb(207, 207, 207)"></VanIcon>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
 .shop-header {
   background: white;
   border-radius: 10px;
-  font-size: 12px;
-  padding: 10px;
+  font-size: 14px; /* Increased font size for better readability */
+  padding: 15px; /* Added padding for better spacing */
   margin: var(--op-page-padding);
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1); /* Slightly lighter shadow for a cleaner look */
 
   &__info {
-        display: flex;
-        margin-bottom: 5px;
-
-        .info__left {
-        flex: 1;
-
-        .shop-name {
-            width: 90%;
-            font-size: 19px;
-            font-weight: bold;
-            margin: 6px 0 8px 0;
-        }
-        .delivery {
-                display: flex;
-                .delivery-tag {
-                    color: var(--op-primary-color);
-                    padding: 1px 5px;
-                    &::before {
-                        border: 1px solid var(--op-primary-color);
-                    }
-                }
-                .delivery-time {
-                margin-left: 10px;
-                }
-                .monthly-count {
-                margin-left: 10px;
-                }
-            }       
-        }
-        .info__right{
-            img{
-                width: 50px;
-                height: 50px;
-            }
-        }
-    }
-    &__service {
     display: flex;
-    margin-bottom: 5px;
+    align-items: center; /* Align elements vertically */
+    margin-bottom: 10px; /* Added more space between elements */
 
-        .service {
+    .info__left {
+      flex: 1;
+
+      .shop-name {
+        font-size: 22px; /* Larger font size for shop name */
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+
+    .info__right img {
+      width: 60px; /* Increased size for shop image */
+      height: 60px;
+      border-radius: 10px; /* Added border-radius for a rounded image */
+    }
+  }
+
+  &__service {
+    display: flex;
+    margin-bottom: 8px;
+
+    .service {
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #333;
+
+      .van-icon {
         margin-right: 5px;
-        }
+      }
     }
-    &__announcement {
-        color: gray;
-    }
-    &__redbags {
-        display: flex;
-        margin-top: 10px;
-        margin-bottom: 5px;
+  }
 
-        .redbag {
-            color: white;
-            margin-right: 5px;
-            display: flex;
+  &__announcement {
+    color: #555; /* Darkened color for better visibility */
+    font-size: 14px;
+    margin-bottom: 10px; /* Added margin for spacing */
+  }
 
-                .redbag-left {
-                    display: flex;
-                    align-items: center;
-                    padding: 2px 4px;
-                    border-radius: 4px 2px 2px 4px;
-                    border-right: 2px dashed rgb(252, 91, 68);
-                    background: linear-gradient(to right, rgb(252, 120, 85), rgb(252, 91, 68));
-
-                .count {
-                font-size: 18px;
-                margin-right: 4px;
-                }
-            }
-
-            .redbag-right {
-                display: flex;
-                align-items: center;
-                padding: 2px 10px 2px 4px;
-                background: rgb(252, 91, 68);
-                border-radius: 2px 4px 4px 2px;
-            }
-        }
-    }
-    &__discounts {
+  &__discounts {
     display: flex;
-    margin-top: 10px;
+    align-items: center;
+    font-size: 14px;
 
     .flex {
       flex: 1;
+      display: flex;
+      flex-wrap: wrap; /* Allows the discounts to wrap if they don't fit */
     }
 
     .activity {
       display: inline-block;
       color: rgb(247, 68, 68);
-      padding: 0 4px;
-      margin-right: 5px;
-      margin-bottom: 2px;
-
-      &::before {
-        border: 1px solid rgb(247, 68, 68);
-      }
+      padding: 3px 8px;
+      margin-right: 8px;
+      margin-bottom: 4px;
+      border-radius: 4px; /* Added rounded corners */
+      border: 1px solid rgb(247, 68, 68);
     }
   }
 }

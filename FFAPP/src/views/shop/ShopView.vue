@@ -61,7 +61,7 @@ const onClickLeft = () => history.back()
 
 <template>
   <div class="shop-page">
-    <VanNavBar left-text="返回" left-arrow @click-left="onClickLeft"></VanNavBar>
+    <VanNavBar left-text="Back" left-arrow @click-left="onClickLeft"></VanNavBar>
     <OpLoadingView :loading="pending" type="skeleton">
       
       <ShopHeader :data="data"></ShopHeader>

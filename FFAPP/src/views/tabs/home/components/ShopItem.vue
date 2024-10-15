@@ -40,7 +40,7 @@ const gotoShop = (id: number | string) => {
         <span class="delivery-distance">Distance{{ data.deliveryDistance }}</span>
       </div>
       <div class="info__desc">
-        <span class="delivery-strating-price">StartPrice{{ data.deliveryStratingPrice }}</span>
+        <span class="delivery-strating-price">Order Minimum:{{ data.deliveryStratingPrice }}</span>
         <span class="delivery-strategy">{{ data.deliveryStrategy }}</span>
         <span v-for="v in data.deliveryTags" :key="v" class="delivery-tag op-thin-border">
           {{ v }}
