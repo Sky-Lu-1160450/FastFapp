@@ -10,6 +10,7 @@ const props = defineProps<IProps>()
 
 const router = useRouter()
 
+// Redirect to the goods detail page on click
 const gotoGoods = () => {
   router.push({
     name: 'goods',
@@ -19,26 +20,25 @@ const gotoGoods = () => {
 </script>
 
 <template>
-    <div class="shop-goods-item" @click="gotoGoods">
-      <img class="img" v-lazy="data.imgUrl" />
-      <div class="content">
-            <div class="name">{{ data.name }}</div>
-            <div class="tips op-ellipsis" v-if="data.tips">{{ data.tips }}</div>
-            <div class="extra">
-            <span class="count">Sale {{ data.sellCount }}</span>
-            <span>Rating {{ data.rating }}</span>
-            </div>
-            <div class="price">
-                <div class="now">$<span>{{ data.price }}</span></div>
-                <div class="old">${{ data.oldPrice }}</div>
-            </div>
-            <div class="cart-control-wrapper">
-                <CartControl :data="data" />
-            </div>
-        </div>
-      
+  <div class="shop-goods-item" @click="gotoGoods" v-if="data">
+    <img class="img" v-lazy="data.imgUrl" />
+    <div class="content">
+      <div class="name">{{ data.name }}</div>
+      <div class="tips op-ellipsis" v-if="data.tips">{{ data.tips }}</div>
+      <div class="extra">
+        <span class="count">Sale {{ data.sellCount }}</span>
+        <span>Rating {{ data.rating }}</span>
+      </div>
+      <div class="price">
+        <div class="now">$<span>{{ data.price }}</span></div>
+        <div class="old">${{ data.oldPrice }}</div>
+      </div>
+      <div class="cart-control-wrapper">
+        <CartControl :data="data" />
+      </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .shop-goods-item {
@@ -96,5 +96,3 @@ const gotoGoods = () => {
   }
 }
 </style>
-
-  
