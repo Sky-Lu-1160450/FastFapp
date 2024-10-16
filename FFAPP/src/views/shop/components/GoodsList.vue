@@ -36,9 +36,9 @@ const categoryActive = ref(0)
 <template>
   <OpLoadingView :loading="pending" type="skeleton">
     <div class="shop-goods-list">
-      <VanSidebar v-model="categoryActive">
+      <!-- <VanSidebar v-model="categoryActive">
         <VanSidebarItem v-for="v in data" :key="v.label" :title="v.label"></VanSidebarItem>
-      </VanSidebar>
+      </VanSidebar> -->
       <div class="list">
         <!-- Display categories and their respective goods -->
         <template v-for="v in data" :key="v.label">
@@ -55,6 +55,7 @@ const categoryActive = ref(0)
   --van-sidebar-selected-border-color: none;
   --van-sidebar-padding: 14px var(--van-padding-sm);
   --van-sidebar-font-size: 13px;
+  
 
   display: flex;
 
@@ -63,10 +64,12 @@ const categoryActive = ref(0)
     margin: 0 10px;
 
     .category-name {
-      font-size: 15px;
+      font-size: 24px;
       font-weight: bold;
+      margin-bottom: 5px;
       padding: 10px 0;
-      line-height: 1.2;
+      border-bottom: 2px solid #eaeaea;  // Subtle divider below category name
+      color: #333;
     }
   }
 }

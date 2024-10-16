@@ -127,10 +127,10 @@ const checkout = async () => {
   <div class="shop-cart">
     <VanPopup v-model:show="isCartListShown" round position="bottom">
       <div class="shop-cart__popup">
-        <div class="shop-cart__tips">
+        <!-- <div class="shop-cart__tips">
           <div>满49减3，还差<span>24.2</span>元<span> 去凑单></span></div>
           <div class="tips-detail">已包含:配送费减 5、特价优惠 20 元</div>
-        </div>
+        </div> -->
         <div class="popup__all">
           <VanCheckbox
             checked-color="rbg(31,175,243)"
@@ -180,7 +180,7 @@ const checkout = async () => {
         </div>
       </div>
     </VanPopup>
-    <div class="shop-cart__tips">配送费<span>满0.01减7</span>、全店<span>满49减3</span></div>
+    <!-- <div class="shop-cart__tips">配送费<span>满0.01减7</span>、全店<span>满49减3</span></div> -->
     <div class="shop-cart__content" @click="showCartListPopup">
       <div class="content__left">
         <div class="cart-logo">
@@ -224,7 +224,7 @@ const checkout = async () => {
 .shop-cart {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   background: white;
   --van-checkbox-size: 16px;
