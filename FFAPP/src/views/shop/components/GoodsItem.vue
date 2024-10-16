@@ -31,14 +31,21 @@ const gotoGoods = () => {
       </div>
       <div class="price">
         <div class="now">$<span>{{ data.price }}</span></div>
-        <div class="old">${{ data.oldPrice }}</div>
+        <div class="old" v-if="data.oldPrice">
+          <s>${{ data.oldPrice }}</s>
+        </div>
+        
+
       </div>
+      
+      
       <div class="cart-control-wrapper">
         <CartControl :data="data" />
       </div>
     </div>
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 .shop-goods-item {
@@ -57,6 +64,8 @@ const gotoGoods = () => {
   &:hover {
     transform: translateY(-5px);
   }
+
+    
 
   .img {
     width: 120px;
@@ -120,6 +129,7 @@ const gotoGoods = () => {
         font-size: 14px;
         text-decoration: line-through;
       }
+        
     }
 
     .cart-control-wrapper {

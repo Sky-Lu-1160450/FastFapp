@@ -17,16 +17,16 @@ const TAB_LIST = [
     label: 'Products',
     component: GoodsList,
   },
-  {
-    value: 2,
-    label: 'Comments',
-    component: OpTodo,
-  },
-  {
-    value: 3,
-    label: 'Shop',
-    component: OpTodo,
-  },
+  // {
+  //   value: 2,
+  //   label: 'Comments',
+  //   component: OpTodo,
+  // },
+  // {
+  //   value: 3,
+  //   label: 'Shop',
+  //   component: OpTodo,
+  // },
 ];
 
 const active = ref(TAB_LIST[0].value);
