@@ -8,7 +8,8 @@ import OpLoadingView from '@/components/OpLoadingView.vue'; // Ensure this compo
 interface OrderItem {
   id: number;
   name: string;
-  quantity: number;
+  cartCount: number;
+  
 }
 
 interface Order {
@@ -70,7 +71,7 @@ const formatDate = (date: string) => {
               <p><strong>Total Price:</strong> ${{ order.totalPrice.toFixed(2) }}</p>
               <ul>
                 <li v-for="item in order.items" :key="item.id">
-                  {{ item.name }} - Quantity: {{ item.quantity }}
+                  {{ item.name }} - Quantity: {{ item.cartCount  }}
                 </li>
               </ul>
               <p><strong>Order Date:</strong> {{ formatDate(order.createdAt) }}</p>
@@ -90,7 +91,7 @@ const formatDate = (date: string) => {
               <p><strong>Total Price:</strong> ${{ order.totalPrice.toFixed(2) }}</p>
               <ul>
                 <li v-for="item in order.items" :key="item.id">
-                  {{ item.name }} - Quantity: {{ item.quantity }}
+                  {{ item.name }} - Quantity: {{ item.cartCount }}
                 </li>
               </ul>
               <p><strong>Order Date:</strong> {{ formatDate(order.createdAt) }}</p>

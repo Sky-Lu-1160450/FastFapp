@@ -20,7 +20,7 @@ export const placeOrder = (orderData: { items: any[], totalPrice: number, delive
 interface OrderItem {
   id: number;
   name: string;
-  quantity: number;
+  cartCount: number;
 }
 
 // Define the interface for an order response

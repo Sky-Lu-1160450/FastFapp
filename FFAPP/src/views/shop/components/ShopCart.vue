@@ -80,7 +80,7 @@ const checkout = async () => {
     // Log cart items and their quantities
     console.log('Cart items:', store.state.items);
     store.state.items.forEach(item => {
-      console.log(`Item: ${item.name}, Quantity: ${item.quantity}`);
+      console.log(`Item: ${item.name}, Quantity: ${item.cartCount}`);
     });
 
     // Prepare order data
