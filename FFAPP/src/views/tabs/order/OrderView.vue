@@ -33,6 +33,8 @@ onMounted(async () => {
     if (userId) {
       const response = await getUserOrders(userId); // Fetch user orders
       console.log('Orders response:', response); // Log the response
+      // Sort orders by createdAt date in descending order
+      orders.value = response.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       orders.value = response; // Assign the user's orders (assuming response is an array of orders)
     }
   } catch (error) {
