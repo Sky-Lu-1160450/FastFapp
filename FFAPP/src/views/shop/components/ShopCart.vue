@@ -77,6 +77,11 @@ const checkout = async () => {
       title: 'Place Order',
       message: `Are you sure you want to place the order for $${store.finalPrice}?`,
     });
+    // Log cart items and their quantities
+    console.log('Cart items:', store.state.items);
+    store.state.items.forEach(item => {
+      console.log(`Item: ${item.name}, Quantity: ${item.quantity}`);
+    });
 
     // Prepare order data
     const orderData = {
@@ -137,10 +142,10 @@ const checkout = async () => {
             :model-value="store.isAllChecked"
             @update:model-value="(isAllChecked) => store.toggleAllChecked(isAllChecked)"
           >
-            <span class="all-label">全选</span>
+            <span class="all-label">Select All</span>
           </VanCheckbox>
-          <div class="all-total">(已选{{ store.total }}件)</div>
-          <span class="all-remove" @click="removeAll"><VanIcon name="delete-o" />清空</span>
+          <div class="all-total">(Select{{ store.total }})</div>
+          <span class="all-remove" @click="removeAll"><VanIcon name="delete-o" />ClearAll</span>
         </div>
         <div class="popup__goods">
           <VanCheckboxGroup
@@ -193,19 +198,19 @@ const checkout = async () => {
               <span class="cart-info__price--now">
                 &yen;<span>{{ store.totalPrice }}</span>
               </span>
-              <span class="cart-info__price--old">&yen;{{ store.totalOldPrice }}</span>
+              <span class="cart-info__price--old">${{ store.totalOldPrice }}</span>
             </template>
-            <span v-else class="cart-info__price--empty">未选购商品</span>
+            <span v-else class="cart-info__price--empty">No Products</span>
           </div>
-          <div class="cart-info__desc">另需配送费 {{ packageFee }} 元</div>
+          <!-- <div class="cart-info__desc">另需配送费 {{ packageFee }} 元</div> -->
         </div>
       </div>
       <div class="content__right">
         <div v-if="store.total" class="order-btn">
-          <div class="label">领券结算</div>
-          <div>预计券后 &yen;{{ store.totalPrice }}</div>
+          <div class="label">Checkout</div>
+          <div> &yen;{{ store.totalPrice }}</div>
         </div>
-        <div v-else class="order-btn order-btn--empty">&yen;20起送</div>
+        <div v-else class="order-btn order-btn--empty">Order Min $20</div>
       </div>
     </div>
     <div class="shop-cart__ball-container">

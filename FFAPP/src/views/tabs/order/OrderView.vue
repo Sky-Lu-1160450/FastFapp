@@ -66,7 +66,7 @@ const formatDate = (date: string) => {
               <h3>Order #{{ order.id }}</h3>
               <p><strong>Status:</strong> {{ order.status }}</p>
               <p><strong>Delivery Address:</strong> {{ order.address }}</p>
-              <p><strong>Phone Number:</strong> {{ order.phone }}</p>
+              <!-- <p><strong>Phone Number:</strong> {{ order.phone }}</p> -->
               <p><strong>Total Price:</strong> ${{ order.totalPrice.toFixed(2) }}</p>
               <ul>
                 <li v-for="item in order.items" :key="item.id">
