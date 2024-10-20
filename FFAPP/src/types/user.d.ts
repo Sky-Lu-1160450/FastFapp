@@ -7,6 +7,7 @@ export interface ILoginInfo {
     id: number | string
     avatar: string
     nickname: string
+    address?: string; // Add address field
   }
   
   export interface IAuth {

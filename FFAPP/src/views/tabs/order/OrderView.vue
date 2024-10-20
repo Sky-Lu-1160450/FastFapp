@@ -1,3 +1,4 @@
+//OrderView.vue
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user'; // Import user store
@@ -7,7 +8,8 @@ import OpLoadingView from '@/components/OpLoadingView.vue'; // Ensure this compo
 interface OrderItem {
   id: number;
   name: string;
-  quantity: number;
+  cartCount: number;
+  
 }
 
 interface Order {
@@ -32,6 +34,8 @@ onMounted(async () => {
     if (userId) {
       const response = await getUserOrders(userId); // Fetch user orders
       console.log('Orders response:', response); // Log the response
+      // Sort orders by createdAt date in descending order
+      orders.value = response.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       orders.value = response; // Assign the user's orders (assuming response is an array of orders)
     }
   } catch (error) {
@@ -63,11 +67,11 @@ const formatDate = (date: string) => {
               <h3>Order #{{ order.id }}</h3>
               <p><strong>Status:</strong> {{ order.status }}</p>
               <p><strong>Delivery Address:</strong> {{ order.address }}</p>
-              <p><strong>Phone Number:</strong> {{ order.phone }}</p>
+              <!-- <p><strong>Phone Number:</strong> {{ order.phone }}</p> -->
               <p><strong>Total Price:</strong> ${{ order.totalPrice.toFixed(2) }}</p>
               <ul>
                 <li v-for="item in order.items" :key="item.id">
-                  {{ item.name }} - Quantity: {{ item.quantity }}
+                  {{ item.name }} - Quantity: {{ item.cartCount  }}
                 </li>
               </ul>
               <p><strong>Order Date:</strong> {{ formatDate(order.createdAt) }}</p>
@@ -87,7 +91,7 @@ const formatDate = (date: string) => {
               <p><strong>Total Price:</strong> ${{ order.totalPrice.toFixed(2) }}</p>
               <ul>
                 <li v-for="item in order.items" :key="item.id">
-                  {{ item.name }} - Quantity: {{ item.quantity }}
+                  {{ item.name }} - Quantity: {{ item.cartCount }}
                 </li>
               </ul>
               <p><strong>Order Date:</strong> {{ formatDate(order.createdAt) }}</p>

@@ -30,6 +30,7 @@ export interface IShop {
   
   export interface IShopDetail extends IShop {
     announcement: string
+    deliverySpeed:string
     discounts: IDiscount[]
     redbags: IRedbag[]
   }

@@ -12,3 +12,13 @@ export const auth = ({ username, password }: ILoginInfo) => {
 export const registerUser = (userData: { username: string; password: string; nickname: string; avatar?: string }) => {
   return axios.post('/auth/register', userData);
 };
+
+// Function to fetch user details (including address)
+export const getUserDetails = (userId: string): Promise<{ address?: string }> => {
+  return axios.get(`/user/details/${userId}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Failed to fetch user details:', error);
+      throw error;
+    });
+};

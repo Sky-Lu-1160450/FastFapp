@@ -55,17 +55,19 @@ const checkout = async () => {
 
   // Check if the user is logged in
   const userId = String(userStore.state.userInfo.id);
+  const address = userStore.state.userInfo.address;  // Get the user's address from the user store
 
   console.log('User Info:', userStore.state.userInfo);
   console.log('User ID:', userId);
+  console.log('User Address:', address);
 
-  if (!userId || userId === 'undefined' || userId === '') {
+  if (!userId || userId === 'undefined' || userId === '' || !address) {
     Dialog.alert({
       title: 'Error',
-      message: 'You must be logged in to place an order.',
+      message: 'You must be logged in and have an address to place an order.',
     });
     // Optionally, redirect to the login page
-    router.push({ name: 'login' });
+    router.push({ name: 'me' });
     return;
   }
 
@@ -75,6 +77,11 @@ const checkout = async () => {
       title: 'Place Order',
       message: `Are you sure you want to place the order for $${store.finalPrice}?`,
     });
+    // Log cart items and their quantities
+    console.log('Cart items:', store.state.items);
+    store.state.items.forEach(item => {
+      console.log(`Item: ${item.name}, Quantity: ${item.cartCount}`);
+    });
 
     // Prepare order data
     const orderData = {
@@ -82,6 +89,7 @@ const checkout = async () => {
       totalPrice: parseFloat(store.totalPrice),
       deliveryFee: store.deliveryFee,
       userId: userId,
+      address: address,
     };
 
     console.log('Placing order with data:', orderData);
@@ -124,20 +132,20 @@ const checkout = async () => {
   <div class="shop-cart">
     <VanPopup v-model:show="isCartListShown" round position="bottom">
       <div class="shop-cart__popup">
-        <div class="shop-cart__tips">
+        <!-- <div class="shop-cart__tips">
           <div>满49减3，还差<span>24.2</span>元<span> 去凑单></span></div>
           <div class="tips-detail">已包含:配送费减 5、特价优惠 20 元</div>
-        </div>
+        </div> -->
         <div class="popup__all">
           <VanCheckbox
             checked-color="rbg(31,175,243)"
             :model-value="store.isAllChecked"
             @update:model-value="(isAllChecked) => store.toggleAllChecked(isAllChecked)"
           >
-            <span class="all-label">全选</span>
+            <span class="all-label">Select All</span>
           </VanCheckbox>
-          <div class="all-total">(已选{{ store.total }}件)</div>
-          <span class="all-remove" @click="removeAll"><VanIcon name="delete-o" />清空</span>
+          <div class="all-total">(Select{{ store.total }})</div>
+          <span class="all-remove" @click="removeAll"><VanIcon name="delete-o" />ClearAll</span>
         </div>
         <div class="popup__goods">
           <VanCheckboxGroup
@@ -177,7 +185,7 @@ const checkout = async () => {
         </div>
       </div>
     </VanPopup>
-    <div class="shop-cart__tips">配送费<span>满0.01减7</span>、全店<span>满49减3</span></div>
+    <!-- <div class="shop-cart__tips">配送费<span>满0.01减7</span>、全店<span>满49减3</span></div> -->
     <div class="shop-cart__content" @click="showCartListPopup">
       <div class="content__left">
         <div class="cart-logo">
@@ -190,19 +198,19 @@ const checkout = async () => {
               <span class="cart-info__price--now">
                 &yen;<span>{{ store.totalPrice }}</span>
               </span>
-              <span class="cart-info__price--old">&yen;{{ store.totalOldPrice }}</span>
+              <span class="cart-info__price--old">${{ store.totalOldPrice }}</span>
             </template>
-            <span v-else class="cart-info__price--empty">未选购商品</span>
+            <span v-else class="cart-info__price--empty">No Products</span>
           </div>
-          <div class="cart-info__desc">另需配送费 {{ packageFee }} 元</div>
+          <!-- <div class="cart-info__desc">另需配送费 {{ packageFee }} 元</div> -->
         </div>
       </div>
       <div class="content__right">
         <div v-if="store.total" class="order-btn">
-          <div class="label">领券结算</div>
-          <div>预计券后 &yen;{{ store.totalPrice }}</div>
+          <div class="label">Checkout</div>
+          <div> &yen;{{ store.totalPrice }}</div>
         </div>
-        <div v-else class="order-btn order-btn--empty">&yen;20起送</div>
+        <div v-else class="order-btn order-btn--empty">Order Min $20</div>
       </div>
     </div>
     <div class="shop-cart__ball-container">
@@ -221,7 +229,7 @@ const checkout = async () => {
 .shop-cart {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   background: white;
   --van-checkbox-size: 16px;

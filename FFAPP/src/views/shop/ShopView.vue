@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useAsync } from '@/use/useAsync'
-import { fetchShopPageData } from '@/api/shop'
+import { fetchShopPageData } from '@/api/shop'; 
 import OpLoadingView from '@/components/OpLoadingView.vue'
 import ShopHeader from './components/ShopHeader.vue'
 import { PRIMARY_COLOR } from '@/config';
@@ -17,16 +17,16 @@ const TAB_LIST = [
     label: 'Products',
     component: GoodsList,
   },
-  {
-    value: 2,
-    label: 'Comments',
-    component: OpTodo,
-  },
-  {
-    value: 3,
-    label: 'Shop',
-    component: OpTodo,
-  },
+  // {
+  //   value: 2,
+  //   label: 'Comments',
+  //   component: OpTodo,
+  // },
+  // {
+  //   value: 3,
+  //   label: 'Shop',
+  //   component: OpTodo,
+  // },
 ];
 
 const active = ref(TAB_LIST[0].value);
@@ -34,6 +34,8 @@ const active = ref(TAB_LIST[0].value);
 const route = useRoute()
 const { id } = route.params
 const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
+  
+
   announcement: '',
   discounts: [],
   redbags: [],
@@ -43,6 +45,7 @@ const { data, pending } = useAsync(() => fetchShopPageData(id as string), {
   deliveryDistance: '',
   deliveryStrategy: '',
   deliveryStratingPrice: '',
+  deliverySpeed: '',  // Add deliverySpeed here to match the interface
   deliveryTags: [],
   deliveryTime: '',
   id: '',
@@ -61,7 +64,7 @@ const onClickLeft = () => history.back()
 
 <template>
   <div class="shop-page">
-    <VanNavBar left-text="返回" left-arrow @click-left="onClickLeft"></VanNavBar>
+    <VanNavBar left-text="Back" left-arrow @click-left="onClickLeft"></VanNavBar>
     <OpLoadingView :loading="pending" type="skeleton">
       
       <ShopHeader :data="data"></ShopHeader>

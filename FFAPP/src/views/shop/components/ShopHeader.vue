@@ -1,195 +1,153 @@
 <script setup lang="ts">
-import type { IShopDetail } from '@/types'
+import type { IShopDetail } from '@/types';
 import { computed } from 'vue';
-import { useToggle } from '@/use/useToggle';
-
-
 
 interface IProps {
-  data: IShopDetail
+  data: IShopDetail;
 }
 
-enum DiscountEnum {
-  Reduction = 1,
-  Delivery = 2,
-  Special = 3,
-  Optional = 4,
-}
+const props = defineProps<IProps>();
 
-const props = defineProps<IProps>()
+// Log the received data to debug
+console.log("Received shop data:", props.data);
 
+const services = computed(() => props.data.services);
+console.log("Services:", services.value);
 
-
+// Limit services to top 3 or fewer
 const topThreeServices = computed(() => props.data.services.slice(0, 3));
+
+// Compute the reduction discounts (if any)
 const reduction = computed(() => {
-  const reduction = props.data.discounts.find((v) => v.type === DiscountEnum.Reduction);
+  const reduction = props.data.discounts.find((v) => v.type === 1); // Assuming 1 is Reduction type
   return reduction ? reduction.content : [];
 });
+
+// Map the reductions for display
 const reductionLabel = computed(() => {
   return reduction.value.map((v) => `$${v.if} Spend $${v.count} off`);
 });
-
-
 </script>
 
 <template>
   <div class="shop-header">
+    <!-- Shop Info Section -->
     <div class="shop-header__info">
-        <div class="info__left">
-            <div class="shop-name op-ellipsis">
-            {{ data.shopName }}<span v-if="data.branch">({{ data.branch }})</span>
-            </div>
+      <div class="info__left">
+        <!-- Shop Name -->
+        <div class="shop-name op-ellipsis">
+          {{ data.shopName }}
         </div>
+      </div>
 
-        <div class="delivery">
-            <div v-if="data.deliveryTags" class="delivery-tag op-thin-border">
-                {{ data.deliveryTags[0] }}
-            </div>
-            <!-- <div class="delivery-time">{{ data.deliveryTime }}</div> -->
-            <!-- <div class="monthly-count">Monthly Sale {{ data.monthlyCount }}</div> -->
+      <!-- Delivery Tag (Optional) -->
+      <div class="delivery">
+        <div v-if="data.deliveryTags && data.deliveryTags.length" class="delivery-tag op-thin-border">
+          {{ data.deliveryTags[0] }}
         </div>
-        <div class="info__right">
-            <img :src="data.postUrl" />
-        </div>
+      </div>
+
+      <!-- Shop Image -->
+      <div class="info__right">
+        <img :src="data.postUrl" alt="Shop Image" />
+      </div>
     </div>
-    <div class="shop-header__service">
-        <div v-for="v in topThreeServices" :key="v.label" class="service">
-            <VanIcon name="passed"></VanIcon>
-            {{ v.label }}
-        </div>
+
+    <!-- Services (Top 3) -->
+    <div class="shop-header__service" v-if="topThreeServices.length">
+      <div v-for="service in topThreeServices" :key="service.label" class="service">
+        <VanIcon name="passed" /> {{ service.label }}
+      </div>
     </div>
-    <div class="shop-header__anouncement ">{{ data.announcement }}</div>
-    <div class="shop-header__redbags">
-        <div v-for="v in data.redbags" :key="v.type" class="redbag">
-            <span class="redbag-left">
-                $<span class="count">{{ v.count }}</span>
-                <span>{{ v.if }}</span>
-            </span>
-            <span class="redbag-right">Get</span>
-        </div>
-    </div>
-    <div class="shop-header__discounts" >
-        <div class="flex">
-            <div v-for="v in reductionLabel" :key="v" class="activity op-thin-border">
-                {{ v }}
-            </div>
-        </div>
-        <VanIcon name="arrow-down" color="rgb(207, 207, 207)"></VanIcon>
-        </div>
-    </div>
+
+    <!-- Announcement and Delivery Speed -->
+    <div v-if="data.announcement" class="shop-header__announcement">{{ data.announcement }}</div>
+    <div v-if="data.deliverySpeed" class="shop-header__announcement">{{ data.deliverySpeed }}</div>
     
-
-
+    <!-- Discounts (Optional) -->
+    <div v-if="reductionLabel.length" class="shop-header__discounts">
+      <div class="flex">
+        <div v-for="reduction in reductionLabel" :key="reduction" class="activity op-thin-border">
+          {{ reduction }}
+        </div>
+      </div>
+      <VanIcon name="arrow-down" color="rgb(207, 207, 207)" />
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
 .shop-header {
   background: white;
   border-radius: 10px;
-  font-size: 12px;
-  padding: 10px;
+  font-size: 14px;
+  padding: 15px;
   margin: var(--op-page-padding);
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 
   &__info {
-        display: flex;
-        margin-bottom: 5px;
-
-        .info__left {
-        flex: 1;
-
-        .shop-name {
-            width: 90%;
-            font-size: 19px;
-            font-weight: bold;
-            margin: 6px 0 8px 0;
-        }
-        .delivery {
-                display: flex;
-                .delivery-tag {
-                    color: var(--op-primary-color);
-                    padding: 1px 5px;
-                    &::before {
-                        border: 1px solid var(--op-primary-color);
-                    }
-                }
-                .delivery-time {
-                margin-left: 10px;
-                }
-                .monthly-count {
-                margin-left: 10px;
-                }
-            }       
-        }
-        .info__right{
-            img{
-                width: 50px;
-                height: 50px;
-            }
-        }
-    }
-    &__service {
     display: flex;
-    margin-bottom: 5px;
+    align-items: center;
+    margin-bottom: 10px;
 
-        .service {
+    .info__left {
+      flex: 1;
+      .shop-name {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+
+    .info__right img {
+      width: 85px;
+      height: 85px;
+      border-radius: 10px;
+    }
+  }
+
+  &__service {
+    display: flex;
+    margin-bottom: 8px;
+
+    .service {
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      color: #333;
+
+      .van-icon {
         margin-right: 5px;
-        }
+      }
     }
-    &__announcement {
-        color: gray;
-    }
-    &__redbags {
-        display: flex;
-        margin-top: 10px;
-        margin-bottom: 5px;
+  }
 
-        .redbag {
-            color: white;
-            margin-right: 5px;
-            display: flex;
+  &__announcement {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 
-                .redbag-left {
-                    display: flex;
-                    align-items: center;
-                    padding: 2px 4px;
-                    border-radius: 4px 2px 2px 4px;
-                    border-right: 2px dashed rgb(252, 91, 68);
-                    background: linear-gradient(to right, rgb(252, 120, 85), rgb(252, 91, 68));
-
-                .count {
-                font-size: 18px;
-                margin-right: 4px;
-                }
-            }
-
-            .redbag-right {
-                display: flex;
-                align-items: center;
-                padding: 2px 10px 2px 4px;
-                background: rgb(252, 91, 68);
-                border-radius: 2px 4px 4px 2px;
-            }
-        }
-    }
-    &__discounts {
+  &__discounts {
     display: flex;
-    margin-top: 10px;
+    align-items: center;
+    font-size: 14px;
 
     .flex {
       flex: 1;
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .activity {
       display: inline-block;
       color: rgb(247, 68, 68);
-      padding: 0 4px;
-      margin-right: 5px;
-      margin-bottom: 2px;
-
-      &::before {
-        border: 1px solid rgb(247, 68, 68);
-      }
+      padding: 3px 8px;
+      margin-right: 8px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+      border: 1px solid rgb(247, 68, 68);
     }
   }
 }

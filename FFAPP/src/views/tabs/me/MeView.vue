@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { ISuperCard } from '@/types'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user';
+import { ref } from 'vue'
 import { useAsync } from '@/use/useAsync'
 import { useAuth } from '@/use/useAuth'
-import { fetchMePageData } from '@/api/me'
+import { fetchMePageData, updateUserAddress } from '@/api/me' // Import the address update API
 import OpLoadingView from '@/components/OpLoadingView.vue'
 
 const router = useRouter()
@@ -12,10 +14,34 @@ const { data, pending } = useAsync(fetchMePageData, {
   cards: [],
   superCard: {} as ISuperCard,
 })
+
+const editingAddress = ref(false) // Track if we're editing the address
+let address = ref(user.value.address || ''); // Access user.address via user.value
+const newAddress = ref('') // New address that the user types in
+
+const toggleEditAddress = () => {
+  editingAddress.value = !editingAddress.value
+}
+
+const saveAddress = async () => {
+  try {
+    // Ensure user.id is always a string by using .toString() if it's a number
+    const userId = typeof user.value.id === 'number' ? user.value.id.toString() : user.value.id;
+    
+    await updateUserAddress(userId, newAddress.value); // Access user.id via user.value, ensuring it's a string
+    
+    address.value = newAddress.value;
+    // Update only the user info (address) in the store
+    const store = useUserStore();
+    store.updateUserInfo({ address: newAddress.value });  // Update only the address
+    editingAddress.value = false; // Close the edit form
+  } catch (error) {
+    console.error('Failed to update address:', error);
+  }
+};
+
 const gotoLogin = () => {
-  router.push({
-    name: 'login',
-  })
+  router.push({ name: 'login' })
 }
 </script>
 
@@ -33,30 +59,22 @@ const gotoLogin = () => {
         <div class="account op-thin-border" @click="gotoLogin">账号登录</div>
       </template>
     </div>
+
     <OpLoadingView :loading="pending" type="skeleton">
-      <div class="me-page__super-card">
-        <div class="super-card__left">
-          <div class="super-card__left__top">
-            <img class="card-img" src="@/assets/imgs/me_page/super-card.png" />
-            <div class="divider"></div>
-            <div class="bean">吃货豆:</div>
-            <div class="bean-count">{{ data.superCard.beanCount }}</div>
-          </div>
-          <div class="super-card__left__tips">{{ data.superCard.tips }}</div>
-        </div>
-        <VanIcon name="arrow" size="14" color="rgb(212, 189, 178)"></VanIcon>
-      </div>
-      <div class="me-page__card" v-for="v in data.cards" :key="v.label">
-        <div class="me-page__card__title">{{ v.label }}</div>
-        <div class="me-page__card__items">
-          <div class="me-page__card__item" v-for="cv in v.items" :key="cv.iconUrl">
-            <VanIcon :name="cv.iconUrl" :size="v.size"></VanIcon>
+      <div class="me-page__card">
+        <div class="me-page__card__title">Edit Address</div>
+          <div class="me-page__card__item" style="padding: 25px 0;">
+            <VanIcon name="location-o" size="20"></VanIcon>
             <div class="label">
-              {{ cv.label }}
-              <span v-if="cv.count" class="count">{{ cv.count }}</span>
+              <template v-if="!editingAddress">
+                <span @click="toggleEditAddress">{{ address || 'My address' }}</span>
+              </template>
+              <template v-else>
+                <input type="text" v-model="newAddress" placeholder="Enter new address" />
+                <button @click="saveAddress">Save</button>
+              </template>
             </div>
           </div>
-        </div>
       </div>
     </OpLoadingView>
   </div>
@@ -171,5 +189,11 @@ const gotoLogin = () => {
       }
     }
   }
+}
+
+.me-page__card__title {
+  text-align: center;
+  padding-top: 10px;
+  margin-top: 20px;
 }
 </style>

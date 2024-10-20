@@ -13,7 +13,7 @@ const onClickLeft = () => history.back();
 const onSubmit = async () => {
   try {
     await login({ username: username.value, password: password.value });
-    onClickLeft();  // Go back on successful login
+    router.push({ name: 'me' });
   } catch (error) {
     console.error('Login failed:', error);
   }
@@ -46,8 +46,8 @@ const goToRegister = () => {
         />
       </VanCellGroup>
       <div style="margin: 16px">
-        <VanButton round block type="primary" native-type="submit">登录</VanButton>
-        <VanButton round block type="default" @click="goToRegister">注册</VanButton>  <!-- Register button -->
+        <VanButton round block type="primary" native-type="submit" style="margin-top: 50px">Login</VanButton>
+        <VanButton round block type="default" @click="goToRegister" style="margin-top: 10px">Register</VanButton>  <!-- Register button -->
       </div>
     </VanForm>
   </div>

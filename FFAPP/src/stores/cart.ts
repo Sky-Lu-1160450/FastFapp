@@ -33,21 +33,23 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   const cartCountById = (id: number) => {
-    return state.items.find((v) => v.id === id)?.cartCount
-  }
+    return state.items.find((v) => v.id === id)?.cartCount || 0;  // Return 0 if item is not found
+  };
+  
   const pushProductToCart = (item: IGood) => {
-    const cartItem = state.items.find((v) => v.id === item.id)
+    const cartItem = state.items.find((v) => v.id === item.id);
     if (cartItem) {
-      cartItem.cartCount++
-      return
+      cartItem.cartCount++;  // Increment quantity
+    } else {
+      item.cartCount = 1;  // Initialize cartCount if this is the first time the item is added
+      state.items.push(item);  // Add new item to the cart
     }
-    item.cartCount = 1
-    state.items.push(item)
-    const isIncluded = state.checkedIds.includes(item.id)
-    if (!isIncluded) {
-      state.checkedIds.push(item.id)
+    
+    if (!state.checkedIds.includes(item.id)) {
+      state.checkedIds.push(item.id);  // Check the item by default
     }
-  }
+  };
+  
 
   const removeProductFromCart = (item: IGood) => {
     const cartItemIndex = state.items.findIndex((v) => v.id === item.id)
