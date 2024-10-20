@@ -23,10 +23,10 @@ const onSubmit = async () => {
 
     await registerUser(data);  // Call the registerUser function to send data to the backend
 
-    VanNotify({ type: 'success', message: '注册成功' });
+    VanNotify({ type: 'success', message: 'successful registration' });
     router.push({ name: 'login' });  // Redirect to the login page after successful registration
   } catch (error) {
-    VanNotify({ type: 'danger', message: '注册失败，请重试' });
+    VanNotify({ type: 'danger', message: 'Registration failed' });
     console.error('Registration failed:', error);
   } finally {
     isLoading.value = false;
@@ -36,38 +36,38 @@ const onSubmit = async () => {
 
 <template>
   <div class="register-page op-fullscreen">
-    <VanNavBar title="注册" left-text="返回" left-arrow @click-left="router.back" />
+    <VanNavBar title="Registration Page" left-text="Back" left-arrow @click-left="router.back" />
     <VanForm class="register-page__form" @submit="onSubmit">
       <VanCellGroup inset>
         <VanField
           v-model="username"
           name="username"
-          label="用户名"
-          placeholder="请输入用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          label="Username"
+          placeholder="Please enter the username"
+          :rules="[{ required: true, message: 'No Username Input' }]"
         />
         <VanField
           v-model="password"
           name="password"
-          label="密码"
-          placeholder="请输入密码"
-          :rules="[{ required: true, message: '请填写密码' }]"
+          label="Password"
+          placeholder="Please enter password"
+          :rules="[{ required: true, message: 'No Password Input' }]"
         />
         <VanField
           v-model="nickname"
           name="nickname"
-          label="昵称"
-          placeholder="请输入昵称"
+          label="Nickname"
+          placeholder="What is your Nickname?"
         />
         <VanField
           v-model="avatar"
           name="avatar"
-          label="头像"
-          placeholder="请输入头像链接"
+          label="Avatar"
+          placeholder="Default Avatar"
         />
       </VanCellGroup>
       <div style="margin: 16px">
-        <VanButton :loading="isLoading" round block type="primary" native-type="submit">注册</VanButton>
+        <VanButton :loading="isLoading" round block type="primary" native-type="submit">Register</VanButton>
       </div>
     </VanForm>
   </div>

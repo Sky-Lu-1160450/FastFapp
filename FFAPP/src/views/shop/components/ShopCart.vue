@@ -34,7 +34,7 @@ const showCartListPopup = () => {
 
 const removeAll = () => {
   Dialog({
-    title: '确定清空购物车?',
+    title: 'Confirm to clear the cart ?',
   })
     .then(() => {
       store.setCartItems([]);

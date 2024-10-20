@@ -27,22 +27,22 @@ const goToRegister = () => {
 
 <template>
   <div class="login-page op-fullscreen">
-    <VanNavBar title="请登录" left-text="返回" left-arrow @click-left="onClickLeft" />
+    <VanNavBar title="Login Page" left-text="Back" left-arrow @click-left="onClickLeft" />
     <VanForm class="login-page__form" @submit="onSubmit">
       <VanCellGroup inset>
         <VanField
           v-model="username"
           name="username"
-          label="用户名"
-          placeholder="请输入用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          label="Username"
+          placeholder="Please enter the username"
+          :rules="[{ required: true, message: 'No username input' }]"
         />
         <VanField
           v-model="password"
           name="password"
-          label="密码"
-          placeholder="请输入密码"
-          :rules="[{ required: true, message: '请填写密码' }]"
+          label="Password"
+          placeholder="Please enter the password "
+          :rules="[{ required: true, message: 'No password input' }]"
         />
       </VanCellGroup>
       <div style="margin: 16px">

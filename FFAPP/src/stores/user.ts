@@ -11,7 +11,7 @@ export interface IUserState {
 const getDefaultUserInfo: () => IUserInfo = () => ({
   id: '',
   avatar: 'https://b.yzcdn.cn/vant/icon-demo-1126.png',
-  nickname: '请登录',
+  nickname: 'Login',
   address: '', // Add address field 
 })
 
@@ -54,6 +54,7 @@ export const useUserStore = defineStore('user', () => {
   const removeInfo = () => {
     state.value.userInfo = getDefaultUserInfo()
     state.value.token = ''
+    // state.value.userInfo.address = '';
     $removeUserInfoItem()
     $removeTokenItem()
   }

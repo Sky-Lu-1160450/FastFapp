@@ -51,12 +51,12 @@ const gotoLogin = () => {
       <template v-if="user.id">
         <img class="avatar" :src="user.avatar" />
         <div class="name">{{ user.nickname }}</div>
-        <div class="account op-thin-border" @click="logout">退出</div>
+        <div class="account op-thin-border" @click="logout">Logout</div>
       </template>
       <template v-else>
         <img class="avatar" src="https://b.yzcdn.cn/vant/icon-demo-1126.png" />
-        <div class="name" @click="gotoLogin">请登录</div>
-        <div class="account op-thin-border" @click="gotoLogin">账号登录</div>
+        <div class="name" @click="gotoLogin">Vistor</div>
+        <div class="account op-thin-border" @click="gotoLogin">Account Login</div>
       </template>
     </div>
 
@@ -103,7 +103,7 @@ const gotoLogin = () => {
     }
     .account {
       color: rgb(33, 179, 244);
-      font-size: 8px;
+      font-size: 15px;
       padding: 1px 10px;
       &:before {
         border-color: rgb(33, 179, 244);
