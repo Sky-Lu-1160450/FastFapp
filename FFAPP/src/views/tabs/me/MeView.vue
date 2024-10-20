@@ -63,8 +63,7 @@ const gotoLogin = () => {
     <OpLoadingView :loading="pending" type="skeleton">
       <div class="me-page__card">
         <div class="me-page__card__title">Edit Address</div>
-        <div class="me-page__card__items">
-          <div class="me-page__card__item">
+          <div class="me-page__card__item" style="padding: 25px 0;">
             <VanIcon name="location-o" size="20"></VanIcon>
             <div class="label">
               <template v-if="!editingAddress">
@@ -76,7 +75,6 @@ const gotoLogin = () => {
               </template>
             </div>
           </div>
-        </div>
       </div>
     </OpLoadingView>
   </div>
@@ -191,5 +189,11 @@ const gotoLogin = () => {
       }
     }
   }
+}
+
+.me-page__card__title {
+  text-align: center;
+  padding-top: 10px;
+  margin-top: 20px;
 }
 </style>
