@@ -8,11 +8,7 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-// Log the received data to debug
-console.log("Received shop data:", props.data);
-
 const services = computed(() => props.data.services);
-console.log("Services:", services.value);
 
 // Limit services to top 3 or fewer
 const topThreeServices = computed(() => props.data.services.slice(0, 3));
