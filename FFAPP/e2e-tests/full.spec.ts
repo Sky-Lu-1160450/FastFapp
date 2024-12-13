@@ -15,9 +15,9 @@ test('End-to-End Test for Registration, Login, and Edit Address', async ({ page 
   await page.click('text="Register"');
 
   // Fill in the registration form and click the 'Register' button
-  await page.fill('input[placeholder="Please enter the username"]', 'Heng');
-  await page.fill('input[placeholder="Please enter password"]', 'Heng123');
-  await page.fill('input[placeholder="What is your Nickname?"]', 'Test4Nickname');
+  await page.fill('input[placeholder="Please enter the username"]', 'Zhou777');
+  await page.fill('input[placeholder="Please enter password"]', 'Zhou123456');
+  await page.fill('input[placeholder="What is your Nickname?"]', 'Test6Nickname');
   await page.click('text="Register"');
 
   // Verify that the page navigates back to the login page
@@ -30,8 +30,8 @@ test('End-to-End Test for Registration, Login, and Edit Address', async ({ page 
   await expect(page.locator('button[type="submit"]')).toBeVisible();
 
   // Fill in the login form and submit it
-  await page.fill('input[name="username"]', 'Heng');
-  await page.fill('input[name="password"]', 'Heng123');
+  await page.fill('input[name="username"]', 'Zhou777');
+  await page.fill('input[name="password"]', 'Zhou123456');
   await page.click('button[type="submit"]');
 
   // Verify that the user is redirected to the 'me' page
@@ -48,7 +48,7 @@ test('End-to-End Test for Registration, Login, and Edit Address', async ({ page 
    await expect(inputField).toBeVisible();
  
    // Step 6: Enter the new address and save it
-   const newAddress = '6667 Cuba St';
+   const newAddress = 'Heguang Xiaoqu jinggang';
    await inputField.fill(newAddress); // Fill the input field
    const saveButton = page.locator('text="Save"');
    await saveButton.click(); // Click the save button
@@ -56,4 +56,16 @@ test('End-to-End Test for Registration, Login, and Edit Address', async ({ page 
    // Step 7: Verify that the updated address is displayed correctly
    const updatedAddressLocator = page.locator(`text="${newAddress}"`);
    await expect(updatedAddressLocator).toBeVisible();
+
+   // Step 8: Navigate to the home page
+  await page.click('text="Home"');
+  await page.waitForURL('http://localhost:3000/home');
+  await expect(page).toHaveURL(/\/home/);
+
+  // Step 9: Select "Chinese Food" and click inside
+  await page.click('text="Chinese Food"');
+  await page.waitForURL(/\/shop\/2/);
+  await expect(page).toHaveURL(/\/shop\/2/);
+
+  
 });
