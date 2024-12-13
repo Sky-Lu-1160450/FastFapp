@@ -9,7 +9,7 @@ export const fetchMePageData = () => {
 export const updateUserAddress = (userId: string, address: string): Promise<void> => {
   return axios.post('/auth/updateAddress', { userId, address })
     .then(response => {
-        return response;
+
       }
     )
     .catch(error => {

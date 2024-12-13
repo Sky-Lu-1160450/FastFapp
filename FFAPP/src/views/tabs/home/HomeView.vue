@@ -11,6 +11,12 @@ import type { IHomeInfo } from '@/types';
 import OpLoadingView from '@/components/OpLoadingView.vue';
 import { PRIMARY_COLOR, TRANSPARENT } from '@/config'
 import { HOME_TABS } from './config'
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  document.title = 'FastApp - Hello'; // Set a specific title for this page
+});
+
 
 const recomments =[
     { 
